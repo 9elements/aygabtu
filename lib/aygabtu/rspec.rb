@@ -1,5 +1,6 @@
 require_relative 'scope/base'
 require_relative 'scope_chain'
+require_relative 'point_of_call'
 
 module Aygabtu
   module RSpec
@@ -7,26 +8,31 @@ module Aygabtu
     module ExampleGroupMethods
       delegate(*Scope::Base.factory_methods, to: :aygabtu_scope_chain)
 
-      def aygabtu_scope_chain
-        @aygabtu_scope_chain ||= if superclass.respond_to?(:aygabtu_scope_chain)
-          superclass.aygabtu_scope_chain
+      def aygabtu_scope
+        @aygabtu_scope ||= if superclass.respond_to?(:aygabtu_scope)
+          superclass.aygabtu_scope
         else
-          ScopeChain.new(&method(:aygabtu_change_context))
+          Scope::Base.blank_slate
         end
       end
 
-      def aygabtu_change_context(new_chain, context_block)
-        context "Context defined at #{new_chain.point_of_definition}" do
-          # inside a different example group now!
-          # thus, the following line needs to be inside this block
-          new_chain.context_block = method(:aygabtu_change_context)
-          @aygabtu_scope_chain = new_chain
-          instance_exec(&context_block)
+      def aygabtu_scope_chain
+        @aygabtu_scope_chain ||= ScopeChain.new(self, aygabtu_scope)
+      end
+
+      def aygabtu_enter_context(block, scope)
+        context "Context defined at #{PointOfCall.point_of_call}" do
+          self.aygabtu_scope = scope
+          instance_exec(&block)
         end
       end
 
       def ignore(*)
       end
+
+      private
+
+      attr_writer :aygabtu_scope
     end
 
     module ExampleGroupModule
