@@ -2,8 +2,10 @@ module Aygabtu
   module Scope
     module Namespace
       def namespace(name)
-        new_data = @data.dup
-        new_data[:namespace] = [@data[:namespace], name]
+        raise "nesting/chaining namespace in/after controller makes no sense" if @data[:controller]
+
+        new_namespace = Pathname(@data[:namespace] || '').join(name.to_s).to_s
+        new_data = @data.dup.merge(namespace: new_namespace)
         self.class.new(new_data)
       end
 
