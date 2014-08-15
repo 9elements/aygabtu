@@ -19,6 +19,13 @@ module Aygabtu
         Path
       ]
 
+      module AlwaysMatches
+        def matches_route?(route)
+          true
+        end
+      end
+      include AlwaysMatches
+
       include(*COMPONENTS)
 
       @factory_methods = COMPONENTS.map do |component|

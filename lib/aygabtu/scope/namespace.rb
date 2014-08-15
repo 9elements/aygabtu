@@ -9,6 +9,15 @@ module Aygabtu
         self.class.new(new_data)
       end
 
+      def matches_route?(route)
+        if @data[:namespace]
+          route.controller_namespace &&
+            (route.controller_namespace + '/').start_with?(@data[:namespace] + '/')
+        else
+          true
+        end && super
+      end
+
       def self.factory_method
         :namespace
       end

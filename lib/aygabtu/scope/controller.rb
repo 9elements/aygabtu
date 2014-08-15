@@ -15,6 +15,16 @@ module Aygabtu
         self.class.new(new_data)
       end
 
+      def matches_route?(route)
+        # namespace matching is handled by namespace module
+        if @data[:controller]
+          route.controller_basename &&
+            route.controller_basename == @data[:controller]
+        else
+          true
+        end && super
+      end
+
       def self.factory_method
         :controller
       end
