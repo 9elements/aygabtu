@@ -1,3 +1,4 @@
+require_relative 'handle'
 require_relative 'scope/base'
 require_relative 'scope_chain'
 require_relative 'point_of_call'
@@ -27,7 +28,22 @@ module Aygabtu
         end
       end
 
-      def ignore(*)
+      def aygabtu_action(action, scope, *args)
+        aygabtu_handle.public_send(action, scope, self, *args)
+      end
+
+      def aygabtu_handle
+        if superclass.respond_to?(:aygabtu_handle)
+          superclass.aygabtu_handle
+        else
+          @_aygabtu_handle ||= Handle.new
+        end
+      end
+
+      Handle.actions.each do |action|
+        define_method(action) do |*args|
+          aygabtu_action(action, aygabtu_scope, *args)
+        end
       end
 
       private
