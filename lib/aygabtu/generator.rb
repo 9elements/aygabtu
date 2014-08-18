@@ -21,10 +21,12 @@ module Aygabtu
     private
 
     def example(route, pass_data)
-      visit_path = route.format(pass_data)
-
       # it is an error to pass too few data, catch where?
-      "it(#{route.example_message.inspect}) { aygabtu_example_for(#{visit_path.inspect}) }"
+      statements = [
+        "path = aygabtu_pass_to_route(#{route.object_id}, #{pass_data.inspect})",
+        "aygabtu_example_for(path)"
+      ]
+      "it(#{route.example_message.inspect}) { #{statements.join('; ')} }"
     end
 
     def pending_example(route, reason)

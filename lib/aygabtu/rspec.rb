@@ -60,6 +60,23 @@ module Aygabtu
         visit path
         aygabtu_assertions
       end
+
+      def aygabtu_pass_to_route(id, pass_data)
+        route = self.class.aygabtu_handle.routes.find { |a_route| a_route.object_id == id }
+
+        pass_data = pass_data.clone
+        pass_data.keys.each do |key|
+          value = pass_data[key]
+          pass_data[key] = aygabtu_fetch_symbolic_pass_value(value) if value.is_a?(Symbol)
+        end
+
+        route.format(pass_data)
+      end
+
+      def aygabtu_fetch_symbolic_pass_value(symbol)
+        raise "Symbolic pass value #{symbol} given, but no such method defined" unless respond_to?(symbol)
+        send(symbol)
+      end
     end
 
     class << self
