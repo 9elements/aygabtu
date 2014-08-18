@@ -1,12 +1,17 @@
 require_relative 'namespace'
 require_relative 'controller'
 require_relative 'path'
+require_relative 'passing'
 
 module Aygabtu
   module Scope
     class Base
       def initialize(data)
         @data = data
+      end
+
+      def pass_data
+        @data.fetch(:passing, {})
       end
 
       def self.blank_slate
@@ -16,7 +21,8 @@ module Aygabtu
       COMPONENTS = [
         Namespace,
         Controller,
-        Path
+        Path,
+        Passing
       ]
 
       module AlwaysMatches
