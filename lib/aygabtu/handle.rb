@@ -24,6 +24,7 @@ module Aygabtu
 
     def pass(scope, example_group, pass_data = {})
       generator = Generator.new(scope, example_group)
+      pass_data = scope.pass_data.merge(pass_data)
 
       each_route(scope) do |route|
         generator.generate_example(route, pass_data)
