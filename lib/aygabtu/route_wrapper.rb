@@ -59,6 +59,10 @@ module Aygabtu
       "passes aygabtu assertions for #{inspect}"
     end
 
+    def format(pass_data)
+      @journey_route.format(pass_data)
+    end
+
     private
 
     def really_required_keys # really clever?

@@ -8,7 +8,8 @@ module Aygabtu
 
     generator_methods = [
       :pending_example,
-      :pending_no_match_failing_example
+      :pending_no_match_failing_example,
+      :example
     ]
     generator_methods.each do |method|
       define_method("generate_#{method}") do |*args|
@@ -18,6 +19,13 @@ module Aygabtu
     end
 
     private
+
+    def example(route, pass_data)
+      visit_path = route.format(pass_data)
+
+      # it is an error to pass too few data, catch where?
+      "it(#{route.example_message.inspect}) { visit(#{visit_path.inspect}); aygabtu_assertions }"
+    end
 
     def pending_example(route, reason)
       "it(#{route.example_message.inspect}) { pending #{reason.to_s.inspect} }"
