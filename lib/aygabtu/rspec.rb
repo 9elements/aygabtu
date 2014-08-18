@@ -55,6 +55,11 @@ module Aygabtu
       def self.included(group)
         group.extend ExampleGroupMethods
       end
+
+      def aygabtu_example_for(path)
+        visit path
+        aygabtu_assertions
+      end
     end
 
     class << self
