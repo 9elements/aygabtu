@@ -1,6 +1,7 @@
 require_relative 'namespace'
 require_relative 'controller'
 require_relative 'path'
+require_relative 'named'
 require_relative 'passing'
 require_relative 'requiring'
 require_relative 'remaining'
@@ -24,6 +25,7 @@ module Aygabtu
         Namespace,
         Controller,
         Path,
+        Named,
         Passing,
         Requiring,
         Remaining
