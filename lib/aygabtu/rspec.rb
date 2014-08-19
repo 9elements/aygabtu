@@ -24,7 +24,7 @@ module Aygabtu
       def aygabtu_enter_context(block, scope)
         context "Context defined at #{PointOfCall.point_of_call}" do
           self.aygabtu_scope = scope
-          instance_exec(&block)
+          class_exec(&block)
         end
       end
 
