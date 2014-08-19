@@ -12,6 +12,11 @@ module Aygabtu
       @journey_route.verb.match('GET')
     end
 
+    def internal?
+      # this particular route is hard to filter by any sensible criterion
+      @journey_route.path.to_regexp == %r{\A/assets}
+    end
+
     # array of parameter names (symbols) required for generating URL
     def required_parts
       @journey_route.required_parts

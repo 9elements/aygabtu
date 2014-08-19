@@ -7,7 +7,7 @@ module Aygabtu
     def routes
       @routes ||= Rails.application.routes.set.map do |journey_route|
         RouteWrapper.new(journey_route)
-      end.select(&:get?)
+      end.select(&:get?).reject(&:internal?)
     end
 
     def self.actions
