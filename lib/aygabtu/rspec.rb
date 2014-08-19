@@ -40,6 +40,12 @@ module Aygabtu
         end
       end
 
+      def aygabtu_matching_routes
+        aygabtu_handle.routes.select do |route|
+          aygabtu_scope.matches_route?(route)
+        end
+      end
+
       Handle.actions.each do |action|
         define_method(action) do |*args|
           aygabtu_action(action, aygabtu_scope, *args)
