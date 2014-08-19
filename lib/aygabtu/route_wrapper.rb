@@ -63,10 +63,8 @@ module Aygabtu
       @journey_route.format(pass_data)
     end
 
-    private
-
-    def really_required_keys # really clever?
-      @journey_route.required_keys - @journey_route.defaults.keys
+    def really_required_keys
+      @journey_route.required_keys.map(&:to_s) - ['controller', 'action']
     end
   end
 end

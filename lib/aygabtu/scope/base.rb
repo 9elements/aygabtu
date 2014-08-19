@@ -2,6 +2,7 @@ require_relative 'namespace'
 require_relative 'controller'
 require_relative 'path'
 require_relative 'passing'
+require_relative 'requiring'
 
 module Aygabtu
   module Scope
@@ -22,7 +23,8 @@ module Aygabtu
         Namespace,
         Controller,
         Path,
-        Passing
+        Passing,
+        Requiring
       ]
 
       module AlwaysMatches
