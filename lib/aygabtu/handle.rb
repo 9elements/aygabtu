@@ -18,6 +18,7 @@ module Aygabtu
       generator = Generator.new(scope, example_group)
 
       each_route(scope) do |route|
+        route.touch!
         generator.generate_pending_example(route, reason)
       end or generator.generate_pending_no_match_failing_example
     end
@@ -27,6 +28,7 @@ module Aygabtu
       pass_data = scope.pass_data.merge(pass_data)
 
       each_route(scope) do |route|
+        route.touch!
         generator.generate_example(route, pass_data)
       end or generator.generate_pending_no_match_failing_example # @TODO
     end

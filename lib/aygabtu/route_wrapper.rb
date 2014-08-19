@@ -66,5 +66,13 @@ module Aygabtu
     def really_required_keys
       @journey_route.required_keys.map(&:to_s) - ['controller', 'action']
     end
+
+    def touch!
+      @touched = true
+    end
+
+    def touched?
+      @touched
+    end
   end
 end
