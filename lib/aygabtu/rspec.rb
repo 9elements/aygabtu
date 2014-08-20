@@ -29,7 +29,7 @@ module Aygabtu
       end
 
       def aygabtu_action(action, scope, *args)
-        aygabtu_handle.public_send(action, scope, self, *args)
+        ScopeActor.new(scope, aygabtu_handle.routes, self).public_send(action, *args)
       end
 
       def aygabtu_handle
@@ -46,7 +46,7 @@ module Aygabtu
         end
       end
 
-      Handle.actions.each do |action|
+      ScopeActor.actions.each do |action|
         define_method(action) do |*args|
           aygabtu_action(action, aygabtu_scope, *args)
         end

@@ -1,5 +1,5 @@
 require_relative 'scope/base'
-require_relative 'handle'
+require_relative 'scope_actor'
 
 GEM_ROOT = Pathname(__FILE__).parent.to_s
 
@@ -24,7 +24,7 @@ module Aygabtu
       end
     end
 
-    Handle.actions.each do |action|
+    ScopeActor.actions.each do |action|
       define_method(action) do |*args|
         @example_group.aygabtu_action(action, @scope, *args)
       end

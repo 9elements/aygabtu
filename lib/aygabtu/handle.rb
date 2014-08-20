@@ -10,20 +10,5 @@ module Aygabtu
       end.select(&:get?).reject(&:internal?)
     end
 
-    def self.actions
-      ScopeActor.actions
-    end
-
-    def pend(scope, example_group, reason)
-      ScopeActor.new(scope, routes, example_group).pend(reason)
-    end
-
-    def pass(scope, example_group, pass_data = {})
-      ScopeActor.new(scope, routes, example_group).pass(pass_data)
-    end
-
-    def ignore(scope, example_group, reason)
-      ScopeActor.new(scope, routes, example_group).ignore(reason)
-    end
   end
 end
