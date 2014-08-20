@@ -1,5 +1,5 @@
 require_relative 'route_wrapper'
-require_relative 'generator'
+require_relative 'scope_actor'
 
 module Aygabtu
   class Handle
@@ -11,43 +11,19 @@ module Aygabtu
     end
 
     def self.actions
-      [:pass, :pend, :ignore]
+      ScopeActor.actions
     end
 
     def pend(scope, example_group, reason)
-      generator = Generator.new(scope, example_group)
-
-      each_route(scope) do |route|
-        route.touch!
-        generator.generate_pending_example(route, reason)
-      end or generator.generate_pending_no_match_failing_example
+      ScopeActor.new(scope, routes, example_group).pend(reason)
     end
 
     def pass(scope, example_group, pass_data = {})
-      generator = Generator.new(scope, example_group)
-      pass_data = scope.pass_data.merge(pass_data)
-
-      each_route(scope) do |route|
-        route.touch!
-        generator.generate_example(route, pass_data)
-      end or generator.generate_pending_no_match_failing_example # @TODO
+      ScopeActor.new(scope, routes, example_group).pass(pass_data)
     end
 
-    def ignore(*)
-    end
-
-    private
-
-    def each_route(scope)
-      match = false
-      routes.each do |route|
-        if scope.matches_route?(route)
-          match = true
-          yield route
-        end
-      end
-
-      match
+    def ignore(scope, example_group, reason)
+      ScopeActor.new(scope, routes, example_group).ignore(reason)
     end
   end
 end
