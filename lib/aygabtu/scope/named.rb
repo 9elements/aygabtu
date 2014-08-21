@@ -1,16 +1,16 @@
 module Aygabtu
   module Scope
     module Named
-      def named(name)
-        raise "nesting/chaining named in/after named makes no sense" if @data[:name]
+      def named(*names)
+        raise "nesting/chaining named in/after named makes no sense" if @data[:names]
 
-        new_data = @data.dup.merge(name: name.to_s)
+        new_data = @data.dup.merge(names: names.map(&:to_s))
         self.class.new(new_data)
       end
 
       def matches_route?(route)
-        if @data[:name]
-          route.name == @data[:name]
+        if @data[:names]
+          @data[:names].include?(route.name)
         else
           true
         end && super
