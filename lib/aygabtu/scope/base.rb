@@ -38,6 +38,20 @@ module Aygabtu
       end
       include AlwaysMatches
 
+      module UnSegmented
+        def segments_split_once
+        end
+      end
+      include UnSegmented
+
+      def segments
+        if split_once = segments_split_once
+          split_once.map(&:segments).reduce(:+)
+        else
+          [self]
+        end
+      end
+
       include(*COMPONENTS)
 
       @factory_methods = COMPONENTS.map do |component|

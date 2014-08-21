@@ -16,6 +16,15 @@ module Aygabtu
         end && super
       end
 
+      def segments_split_once
+        return super unless Array(@data[:names]).length > 1
+
+        @data[:names].map do |name|
+          new_data = @data.merge(names: [name])
+          self.class.new(new_data)
+        end
+      end
+
       def self.factory_method
         :named
       end
