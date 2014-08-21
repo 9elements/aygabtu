@@ -12,7 +12,7 @@ module Aygabtu
 
     def pass(pass_data)
       each_empty_scope_segment do |scope, generator|
-        generator.generate_pending_no_match_failing_example # @TODO
+        generator.generate_no_match_failing_example(:pass)
       end
 
       each_scope_segment_and_route do |scope, generator, route|
@@ -27,7 +27,7 @@ module Aygabtu
       raise "Reason for ignoring must be a string" unless reason.is_a?(String)
 
       each_empty_scope_segment do |scope, generator|
-        generator.generate_pending_no_match_failing_example # @TODO
+        generator.generate_no_match_failing_example(:ignore)
       end
 
       each_scope_segment_and_route do |scope, generator, route|
@@ -37,7 +37,7 @@ module Aygabtu
 
     def pend(reason)
       each_empty_scope_segment do |scope, generator|
-        generator.generate_pending_no_match_failing_example
+        generator.generate_no_match_failing_example(:pend)
       end
 
       each_scope_segment_and_route do |scope, generator, route|

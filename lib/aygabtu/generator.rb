@@ -8,7 +8,7 @@ module Aygabtu
 
     generator_methods = [
       :pending_example,
-      :pending_no_match_failing_example,
+      :no_match_failing_example,
       :example
     ]
     generator_methods.each do |method|
@@ -33,8 +33,8 @@ module Aygabtu
       "it(#{route.example_message.inspect}) { pending #{reason.to_s.inspect} }"
     end
 
-    def pending_no_match_failing_example
-      error_message = "No matching route to pend, diagnostics: #{@scope.inspect}"
+    def no_match_failing_example(action)
+      error_message = "No matching route (action was: #{action.inspect}, diagnostics: #{@scope.inspect}"
 
       "it('is treated as an error by aygabtu when pending and no route matches') { raise #{error_message.inspect} }"
     end
