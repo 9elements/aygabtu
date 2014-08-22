@@ -73,7 +73,19 @@ module Aygabtu
     end
 
     def format(pass_data)
-      @journey_route.format(pass_data)
+      pass_data = pass_data.stringify_keys
+
+      query_data = pass_data.except(*@journey_route.parts.map(&:to_s))
+      pass_data = pass_data.except(*query_data.keys)
+
+      pass_data.symbolize_keys! # format expects symbols, but we deal with strings in all other places
+      path = @journey_route.format(pass_data)
+
+      if query_data.empty?
+        path
+      else
+        "#{path}?#{Rack::Utils.build_query(query_data)}"
+      end
     end
 
     def really_required_keys
