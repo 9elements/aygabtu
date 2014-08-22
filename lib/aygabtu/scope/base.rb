@@ -31,18 +31,20 @@ module Aygabtu
         Remaining
       ]
 
-      module AlwaysMatches
+      module BasicBehaviour
+        # defines methods below COMPONENTS in the inheritance chain
+        # so components can override and call super
+
         def matches_route?(route)
           true
         end
-      end
-      include AlwaysMatches
 
-      module UnSegmented
         def segments_split_once
         end
       end
-      include UnSegmented
+      include BasicBehaviour
+
+      include(*COMPONENTS)
 
       def segments
         if split_once = segments_split_once
@@ -51,8 +53,6 @@ module Aygabtu
           [self]
         end
       end
-
-      include(*COMPONENTS)
 
       @factory_methods = COMPONENTS.map do |component|
         component.try(:factory_method)
