@@ -76,7 +76,13 @@ module Aygabtu
           pass_data[key] = aygabtu_fetch_symbolic_pass_value(value) if value.is_a?(Symbol)
         end
 
-        route.format(pass_data)
+        missing_keys = route.really_required_keys - pass_data.keys.map(&:to_s)
+
+        if missing_keys.empty?
+          route.format(pass_data)
+        else
+          raise "Route is missing required key(s) #{missing_keys.map(&:inspect).join(', ')}"
+        end
       end
 
       def aygabtu_fetch_symbolic_pass_value(symbol)
