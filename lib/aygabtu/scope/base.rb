@@ -1,5 +1,6 @@
 require_relative 'namespace'
 require_relative 'controller'
+require_relative 'action'
 require_relative 'named'
 require_relative 'passing'
 require_relative 'requiring'
@@ -24,6 +25,7 @@ module Aygabtu
       COMPONENTS = [
         Namespace,
         Controller,
+        Action,
         Named,
         Passing,
         Requiring,
