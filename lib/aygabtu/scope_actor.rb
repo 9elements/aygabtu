@@ -10,7 +10,7 @@ module Aygabtu
       [:pass, :pend, :ignore]
     end
 
-    def pass(pass_data)
+    def pass(pass_data = {})
       each_empty_scope_segment do |scope, generator|
         generator.generate_no_match_failing_example(:pass)
       end
