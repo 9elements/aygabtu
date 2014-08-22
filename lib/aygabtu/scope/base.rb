@@ -3,6 +3,7 @@ require_relative 'controller'
 require_relative 'named'
 require_relative 'passing'
 require_relative 'requiring'
+require_relative 'requiring_anything'
 require_relative 'remaining'
 
 module Aygabtu
@@ -26,6 +27,7 @@ module Aygabtu
         Named,
         Passing,
         Requiring,
+        RequiringAnything,
         Remaining
       ]
 
