@@ -6,7 +6,11 @@ module Aygabtu
 
     def initialize(journey_route)
       @journey_route = journey_route
+
+      @marks = Hash.new { |hash, key| hash[key] = [] }
     end
+
+    attr_reader :marks
 
     def get?
       @journey_route.verb.match('GET')

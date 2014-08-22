@@ -1,3 +1,4 @@
+require_relative 'point_of_call'
 require_relative 'generator'
 
 module Aygabtu
@@ -18,7 +19,7 @@ module Aygabtu
       each_scope_segment_and_route do |scope, generator, route|
         pass_data = @scope.pass_data.merge(pass_data)
 
-        route.touch!
+        mark_route(route, :pass)
         generator.generate_example(route, pass_data)
       end
     end
@@ -31,7 +32,7 @@ module Aygabtu
       end
 
       each_scope_segment_and_route do |scope, generator, route|
-        route.touch!
+        mark_route(route, :ignore)
       end
     end
 
@@ -41,12 +42,25 @@ module Aygabtu
       end
 
       each_scope_segment_and_route do |scope, generator, route|
-        route.touch!
+        mark_route(route, :pend)
         generator.generate_pending_example(route, reason)
       end
     end
 
     private
+
+    def mark_route(route, action)
+      if route.marks.values.all?(&:empty?)
+        route.marks[action] << PointOfCall.point_of_call
+        route.touch!
+      else
+        previous_action, points_of_call = route.marks.to_a.find do |_, poc|
+          poc.present?
+        end
+
+        raise "Trying to use route #{route.inspect} with action #{action}, but route has already been used with action #{previous_action} here: #{points_of_call.join ', '}"
+      end
+    end
 
     def each_scope_segment_and_route
       segments_generators_routes.each do |segment, generator, routes|
