@@ -18,6 +18,10 @@ module Aygabtu
         end && super
       end
 
+      def inspect_data
+        super.merge(namespace: inspected_or_nil(@data[:namespace]))
+      end
+
       def self.factory_method
         :namespace
       end

@@ -25,6 +25,10 @@ module Aygabtu
         end && super
       end
 
+      def inspect_data
+        super.merge(controller: inspected_or_nil(@data[:controller]))
+      end
+
       def self.factory_method
         :controller
       end

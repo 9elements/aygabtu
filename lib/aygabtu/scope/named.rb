@@ -25,6 +25,11 @@ module Aygabtu
         end
       end
 
+      def inspect_data
+        return super unless names = @data[:names]
+        super.merge(name: names.map(&:inspect).join('; '))
+      end
+
       def self.factory_method
         :named
       end

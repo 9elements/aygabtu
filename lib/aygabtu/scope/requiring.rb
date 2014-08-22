@@ -13,6 +13,11 @@ module Aygabtu
         end && super
       end
 
+      def inspect_data
+        return super unless @data[:requiring]
+        super.merge(requiring: @data[:requiring].inspect)
+      end
+
       def self.factory_method
         :requiring
       end

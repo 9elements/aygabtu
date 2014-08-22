@@ -41,6 +41,10 @@ module Aygabtu
 
         def segments_split_once
         end
+
+        def inspect_data
+          {}
+        end
       end
       include BasicBehaviour
 
@@ -54,12 +58,29 @@ module Aygabtu
         end
       end
 
+      def inspect
+        data = inspect_data
+        data.keys.each { |key| data.delete(key) if data[key].nil? }
+        message = if data.empty?
+          "nothing specified"
+        else
+          data.map { |key, value| "#{key}: #{value}" }.join(', ')
+        end
+        "\#<Aygabtu scope (#{message})>"
+      end
+
       @factory_methods = COMPONENTS.map do |component|
         component.try(:factory_method)
       end.compact
 
       class << self
         attr_reader :factory_methods
+      end
+
+      private
+
+      def inspected_or_nil(obj)
+        obj.inspect unless obj.nil?
       end
     end
   end

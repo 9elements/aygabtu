@@ -10,6 +10,10 @@ module Aygabtu
         (!@data[:remaining] || !route.touched?) && super
       end
 
+      def inspect_data
+        super.merge(remaining: @data[:remaining])
+      end
+
       def self.factory_method
         :remaining
       end
