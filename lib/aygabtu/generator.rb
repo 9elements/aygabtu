@@ -36,7 +36,7 @@ module Aygabtu
     def no_match_failing_example(action)
       error_message = "No matching route (action was: #{action.inspect}, diagnostics: #{@scope.inspect}"
 
-      "it('is treated as an error by aygabtu when pending and no route matches') { raise #{error_message.inspect} }"
+      "it('is treated as an error by aygabtu when no route matches') { raise #{error_message.inspect} }"
     end
   end
 end
