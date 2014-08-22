@@ -8,7 +8,7 @@ module Aygabtu
     end
 
     def self.actions
-      [:pass, :pend, :ignore]
+      [:pass, :pend, :ignore, :covered!]
     end
 
     def pass(pass_data = {})
@@ -34,6 +34,10 @@ module Aygabtu
       each_scope_segment_and_route do |scope, generator, route|
         mark_route(route, :ignore)
       end
+    end
+
+    def covered!
+      ignore "this is already covered by a non-aygabtu feature"
     end
 
     def pend(reason)
