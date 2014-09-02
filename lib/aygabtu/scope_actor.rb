@@ -67,7 +67,9 @@ module Aygabtu
     end
 
     def route_action_valid?(route, action)
-      route.marks.values.all?(&:empty?)
+      previous_actions_considered = route.marks.keys
+      previous_actions_considered.delete(:pass) if action == :pass # creating more than one :pass example per route is allowed
+      route.marks.values_at(*previous_actions_considered).all?(&:empty?)
     end
 
     def each_scope_segment_and_route
