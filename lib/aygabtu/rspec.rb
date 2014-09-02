@@ -92,6 +92,10 @@ module Aygabtu
         send(symbol)
       end
 
+      def aygabtu_assert_status_success
+        expect(page.status_code).to be 200
+      end
+
       def aygabtu_assert_not_redirected_away # @TODO create custom rspec matcher to provide cleaner error messages
         uri = URI(current_url)
         uri.host = nil
