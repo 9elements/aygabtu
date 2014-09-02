@@ -67,6 +67,8 @@ module Aygabtu
         aygabtu_assertions
       end
 
+      attr_accessor :aygabtu_visit_path
+
       def aygabtu_pass_to_route(id, pass_data)
         route = self.class.aygabtu_handle.routes.find { |a_route| a_route.object_id == id }
 
