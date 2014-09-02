@@ -102,6 +102,10 @@ module Aygabtu
         uri.scheme = nil
         expect(uri.to_s).to be == aygabtu_path_to_visit
       end
+
+      def aygabtu_assertions
+        raise "Hey aygabtu user, please implement this yourself by overriding the aygabtu_assert method!"
+      end
     end
 
     class << self
