@@ -91,6 +91,13 @@ module Aygabtu
         raise "Symbolic pass value #{symbol} given, but no such method defined" unless respond_to?(symbol)
         send(symbol)
       end
+
+      def aygabtu_assert_not_redirected_away # @TODO create custom rspec matcher to provide cleaner error messages
+        uri = URI(current_url)
+        uri.host = nil
+        uri.scheme = nil
+        expect(uri.to_s).to be == aygabtu_visit_path
+      end
     end
 
     class << self
