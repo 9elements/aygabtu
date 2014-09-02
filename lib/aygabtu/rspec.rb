@@ -67,7 +67,7 @@ module Aygabtu
         aygabtu_assertions
       end
 
-      attr_accessor :aygabtu_visit_path
+      attr_accessor :aygabtu_path_to_visit
 
       def aygabtu_pass_to_route(id, pass_data)
         route = self.class.aygabtu_handle.routes.find { |a_route| a_route.object_id == id }
@@ -96,7 +96,7 @@ module Aygabtu
         uri = URI(current_url)
         uri.host = nil
         uri.scheme = nil
-        expect(uri.to_s).to be == aygabtu_visit_path
+        expect(uri.to_s).to be == aygabtu_path_to_visit
       end
     end
 
