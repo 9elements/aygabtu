@@ -54,7 +54,7 @@ module Aygabtu
     private
 
     def mark_route(route, action)
-      if route.marks.values.all?(&:empty?)
+      if route_action_valid?(route, action)
         route.marks[action] << PointOfCall.point_of_call
         route.touch!
       else
@@ -64,6 +64,10 @@ module Aygabtu
 
         raise "Trying to use route #{route.inspect} with action #{action}, but route has already been used with action #{previous_action} here: #{points_of_call.join ', '}"
       end
+    end
+
+    def route_action_valid?(route, action)
+      route.marks.values.all?(&:empty?)
     end
 
     def each_scope_segment_and_route
