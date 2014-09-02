@@ -1,8 +1,6 @@
 require_relative 'scope/base'
 require_relative 'scope_actor'
 
-GEM_ROOT = Pathname(__FILE__).parent.to_s
-
 module Aygabtu
   class ScopeChain
     def initialize(example_group, scope)
