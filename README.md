@@ -208,6 +208,10 @@ You can also use `remaining` at the very bottom to pend all remaining routes, se
 * `requiring_anything(true)` matches routes which have a dynamic segment.
 * `requiring_anything(false)` matches routes which have no dynamic segment.
 
+## Caveats
+
+* With the standard assertions configured, Aygabtu will happily accept a rails error page as long as the HTTP status is 200. Somebody should find out how these can be reliably told apart from regular result pages, so the default assertions can be improved. Until then, you should try to add an assertion that checks for a common element on pages, like a footer element.
+
 ## Missing features
 
 * tests, preferrably against different versions of Rails, RSpec and capybara
