@@ -2,7 +2,8 @@
 
 Aygabtu lets you write simplistic feature tests quickly.
 
-It provides a DSL on top of rspec and capybara that can be used to enumerate a rails application's routes and auto-generate feature tests. These tests are simple and superficial, but cheap.
+It provides a DSL on top of rspec and capybara that can be used to enumerate a rails application's routes and auto-generate feature tests.
+These tests are very easy to set up, but they can only assert simple things like "does the page actually get rendered?".
 
 Features that are valuable and profitable enough should still be written conventionally, aygabtu is not a silver bullet for feature tests. Since aygabtu embraces rspec, it should be simple to migrate a feature from using aygabtu to a full-blown rspec/capybara feature.
 
