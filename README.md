@@ -12,7 +12,9 @@ Aygabtu uses code generation under the hood, but tries to be guard-friendly: Gua
 
 Add this line to your application's Gemfile:
 
-    gem 'aygabtu'
+    group :test do
+      gem 'aygabtu', require: false
+    end
 
 And then execute:
 
@@ -28,6 +30,8 @@ Create `spec/features/aygabtu_features_spec.rb` with the following content:
 
 ```
 require 'spec_helper' # or whatever is necessary to initialize your Rails app and configure rspec and capybara
+
+require 'aygabtu/rspec'
 
 describe "Aygabtu generated features" do
   include Aygabtu::RSpec.example_group_module
