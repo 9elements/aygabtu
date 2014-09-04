@@ -30,16 +30,11 @@ module Aygabtu
     end
 
     def pending_example(route, reason)
-      body = [
-        "pending #{reason.to_s.inspect}"
-      ]
-      if ::RSpec::Core::Version::STRING.split('.').first == '3'
-        # RSpec totally changed their mind on pending. We should be using skip here, but apparently skipped
-        # examples do not take or report any reason for skipping, and we want the reason to appear
-        # at least in the documentation format.
-        body << 'raise("rspec_core treats pending examples as failing unless it _would_ fail")'
-      end
-      "it(#{route.example_message.inspect}) { #{body.join('; ')} }"
+      # We must disable the example in such a way that before hooks are not executed.
+      # I could not find a way of doing this in such a way that RSpec actually takes the reason for
+      # the pending string instead of "Not yet implemented".
+
+      "it(#{route.example_message.inspect}, skip: #{reason.inspect})"
     end
 
     def no_match_failing_example(action)

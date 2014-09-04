@@ -149,6 +149,9 @@ end
 
 Creates a pending example for every matching route. Requires you to indicate a reason as the only parameter. This is a good thing since it means the reason for the decision to pend the example(s) is kept in the source.
 
+Pending examples are disabled in such a way that before hooks are not invoked. May actually use RSpec's skip mechanism instead of pending.
+Unfortunately, the reason does not show up in the output.
+
 ### `ignore`
 
 No example whatsoever will be generated for matching routes. Requires you to indicate a reason just like `pend`.
