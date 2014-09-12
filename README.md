@@ -34,7 +34,7 @@ require 'spec_helper' # or whatever is necessary to initialize your Rails app an
 
 require 'aygabtu/rspec'
 
-describe "Aygabtu generated features" do
+describe "Aygabtu generated features", type: :feature do
   include Aygabtu::RSpec.example_group_module
 
   def aygabtu_assertions
