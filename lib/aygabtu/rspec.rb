@@ -43,7 +43,7 @@ module Aygabtu
       def aygabtu_matching_routes(scope = aygabtu_scope)
         scope = scope.scope if scope.respond_to?(:scope) # a scope chain can be pased as well
         aygabtu_handle.routes.select do |route|
-          aygabtu_scope.matches_route?(route)
+          scope.matches_route?(route)
         end
       end
 
