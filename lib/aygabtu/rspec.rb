@@ -105,7 +105,7 @@ module Aygabtu
       end
 
       def aygabtu_assertions
-        raise "Hey aygabtu user, please implement this yourself by overriding the aygabtu_assert method!"
+        raise "Hey aygabtu user, please implement this yourself by overriding the aygabtu_assertions method!"
       end
     end
 
