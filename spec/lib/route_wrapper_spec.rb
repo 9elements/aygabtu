@@ -32,7 +32,7 @@ Rails.application.routes.draw do
 end
 
 
-describe "RouteWrapper" do
+describe "RouteWrapper", bundled: true do
   include Aygabtu::RSpec.example_group_module
 
   describe "test mechanism for identifying routes independently of controller, name and action" do
