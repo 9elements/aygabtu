@@ -51,9 +51,9 @@ module Aygabtu
       @journey_route.name.to_s if @journey_route.name
     end
 
-    def matches_string?(string)
-      @journey_route.path.to_regexp.match(string)
-    end
+    # def matches_string?(string)
+    #   @journey_route.path.to_regexp.match(string)
+    # end
 
     # this assumes parameters.keys == required_parts
     def generate_url_with_proper_parameters(parameters)
