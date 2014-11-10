@@ -20,6 +20,10 @@ describe "foo" do
     it "passes RouteWrapper tests" do
       expect(rspec_result('spec/lib/route_wrapper_spec.rb')).to contain_only_passed_examples
     end
+
+    it "passes matching routes tests" do
+      expect(rspec_result('spec/matching_routes_spec.rb')).to contain_only_passed_examples
+    end
   end
 end
 
