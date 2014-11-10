@@ -2,13 +2,13 @@ require 'rails_application_helper'
 
 require 'aygabtu/rspec'
 
+require 'support/identifies_routes'
+
 #require 'pry-byebug'
 
-def identified_by(identifier)
-  { defaults: { route_identifier: identifier } }
-end
-
 Rails.application.routes.draw do
+  extend IdentifiesRoutes
+
   get 'bogus', identified_by(:test_identification).merge(to: 'bogus#bogus')
 
   get 'bogus', identified_by(:has_implicit_controller).merge(to: 'foo#bogus')
@@ -33,6 +33,8 @@ end
 
 
 describe "RouteWrapper", bundled: true do
+  include IdentifiesRoutes
+
   include Aygabtu::RSpec.example_group_module
 
   describe "test mechanism for identifying routes independently of controller, name and action" do
@@ -134,21 +136,14 @@ describe "RouteWrapper", bundled: true do
       end
     end
   end
- 
+
+  # all routes seen by route_identified_by
+  def all_routes
+    matching_routes
+  end
+
   def matching_routes
     # we only test those routes facing aygabtu example groups, when fex. non-get routes have already been filtered out
     self.class.aygabtu_matching_routes
-  end
-
-  def be_identified_by(identifier)
-    satisfy { |rw| rw.journey_route.defaults[:route_identifier] == identifier }
-  end
-
-  def route_identified_by(identifier)
-    identified_routes = matching_routes.select do |rw|
-      rw.journey_route.defaults[:route_identifier] == identifier
-    end
-    expect(identified_routes.length).to be == 1
-    identified_routes.first
   end
 end
