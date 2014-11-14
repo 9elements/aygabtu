@@ -24,6 +24,10 @@ describe "foo" do
     it "passes matching routes tests" do
       expect(rspec_result('spec/matching_routes_spec.rb')).to contain_only_passed_examples
     end
+
+    it "passes example anatomy tests" do
+      expect(rspec_result('spec/example_spec.rb')).to contain_only_passed_examples
+    end
   end
 end
 
