@@ -175,6 +175,12 @@ then
 * `namespace('a/bar')` matches no of them
 * `controller('foo')` matches (1) and (3)
 
+### `action`
+
+`action(:show)` matches routes to any `show` action.
+
+When called with multiple arguments, the resulting scope breaks up internally, and for each name, a route must match. So `action(:show, :index)` is just a short-hand for using `action` twice.
+
 ### `named`
 
 `named(:posts)` matches the route named `posts` (which you would link to using `posts_path` or `posts_url`).
