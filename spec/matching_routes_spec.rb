@@ -51,7 +51,7 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
       # namespacing all routes (above) and all aygabtu scopings here except for
       # the 'remaining' case makes all these cases read as if both the remaining route
       # and this namespacing were not there.
-      # So ignore them on first reading.
+      # So ignore them on first reading (except for the fact the route name includes this namespace).
       # This trick simplifies coexistence with the 'remaining' case. See bottom of this block.
 
       controller(:controller_a) do
