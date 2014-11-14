@@ -2,8 +2,6 @@ require 'rails_application_helper'
 
 require 'aygabtu/rspec'
 
-require 'json'
-
 require 'support/identifies_routes'
 
 RSpec.configure do |rspec|
