@@ -26,12 +26,16 @@ Rails.application.routes.draw do
     end
 
     get 'bogus', identified_by(:action_route).merge(to: 'bogus#some_action')
+    get 'bogus', identified_by(:another_action_route).merge(to: 'bogus#other_action')
 
     get ':segment', identified_by(:with_segment).merge(to: 'bogus#bogus')
     get '*glob', identified_by(:with_glob).merge(to: 'bogus#bogus')
 
+    get ':first_segment/:second_segment', identified_by(:two_segments).merge(to: 'bogus#bogus')
+
     get 'implicitly_named', identified_by(:implicitly_named).merge(to: 'bogus#bogus')
     get 'bogus', identified_by(:explicitly_named).merge(to: 'bogus#bogus', as: :explicitly_named)
+
   end
 
   get 'bogus', identified_by(:remaining_route).merge(to: 'bogus#bogus')
@@ -68,6 +72,10 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
         routes_for_scope['action some_action'] = aygabtu_matching_routes
       end
 
+      action(:some_action, :other_action) do
+        routes_for_scope['action with multiple args'] = aygabtu_matching_routes
+      end
+
       namespace('namespace') do
         routes_for_scope['namespace namespace'] = aygabtu_matching_routes
       end
@@ -80,12 +88,20 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
         routes_for_scope['named explicitly_named'] = aygabtu_matching_routes
       end
 
+      named(:not_remaining_explicitly_named, :not_remaining_implicitly_named) do
+        routes_for_scope['named with multiple args'] = aygabtu_matching_routes
+      end
+
       requiring(:segment) do
         routes_for_scope['requiring segment'] = aygabtu_matching_routes
       end
 
       requiring(:glob) do
         routes_for_scope['requiring glob'] = aygabtu_matching_routes
+      end
+
+      requiring(:first_segment, :second_segment) do
+        routes_for_scope['requiring multiple args'] = aygabtu_matching_routes
       end
 
       requiring_anything(true) do
@@ -150,6 +166,15 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
           expect(routes).to contain_exactly(be_identified_by(:action_route))
         end
       end
+
+      context "scope", scope: 'action with multiple args' do
+        it "matches routes with given actions" do
+          expect(routes).to contain_exactly(
+            be_identified_by(:action_route),
+            be_identified_by(:another_action_route)
+          )
+        end
+      end
     end
 
     describe 'namespace scoping' do
@@ -175,6 +200,15 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
           expect(routes).to contain_exactly(be_identified_by(:explicitly_named))
         end
       end
+
+      context "scope", scope: 'named with multiple args' do
+        it "matches given named routes" do
+          expect(routes).to contain_exactly(
+            be_identified_by(:explicitly_named),
+            be_identified_by(:implicitly_named)
+          )
+        end
+      end
     end
 
     describe 'requiring scoping' do
@@ -189,6 +223,12 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
           expect(routes).to contain_exactly(be_identified_by(:with_glob))
         end
       end
+
+      context "scope", scope: 'requiring multiple args' do
+        it "matches route requiring given segments" do
+          expect(routes).to contain_exactly(be_identified_by(:two_segments))
+        end
+      end
     end
 
     describe "requiring_anything scoping" do
@@ -196,7 +236,8 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
         it "matches route requiring any segment or glob" do
           expect(routes).to contain_exactly(
             be_identified_by(:with_segment),
-            be_identified_by(:with_glob)
+            be_identified_by(:with_glob),
+            be_identified_by(:two_segments)
           )
         end
       end
