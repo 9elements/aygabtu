@@ -21,6 +21,8 @@ Rails.application.routes.draw do
 
     namespace "namespace" do
       get 'bogus', identified_by(:namespaced_controller_route).merge(to: 'controller_a#bogus')
+
+      get 'bogus', identified_by(:namespaced_and_named).merge(to: 'bogus#bogus', as: 'name')
     end
 
     get 'bogus', identified_by(:action_route).merge(to: 'bogus#some_action')
@@ -94,6 +96,10 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
         routes_for_scope['requiring_anything false'] = aygabtu_matching_routes
       end
 
+      namespace(:namespace).named(:not_remaining_namespace_name) do
+        routes_for_scope['namespaced and named'] = aygabtu_matching_routes
+      end
+
       ## MUST BE AT THE BOTTOM
       ignore "this makes all routes except the 'remaining' one remaining for aygabtu"
     end
@@ -149,7 +155,10 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
     describe 'namespace scoping' do
       context "scope", scope: 'namespace namespace' do
         it "matches namespaced route" do
-          expect(routes).to contain_exactly(be_identified_by(:namespaced_controller_route))
+          expect(routes).to contain_exactly(
+            be_identified_by(:namespaced_controller_route),
+            be_identified_by(:namespaced_and_named)
+          )
         end
       end
     end
@@ -197,6 +206,14 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
           expect(routes).not_to be_empty
           expect(routes).not_to include(be_identified_by(:with_segment))
           expect(routes).not_to include(be_identified_by(:with_glob))
+        end
+      end
+    end
+
+    describe "combined scoping" do
+      context "scope", scope: 'namespaced and named' do
+        it "matches route matching both criteria" do
+          expect(routes).to include(be_identified_by(:namespaced_and_named))
         end
       end
     end
