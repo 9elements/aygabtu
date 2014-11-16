@@ -79,7 +79,7 @@ namespace(:web).controller(:posts)
 
 is a scope matching all routes routing into `Web::PostsController`.
 
-Aygabtu keeps a **current scope**. You can call any action inside an example group, this will call that action on the current scope. Calling
+Aygabtu keeps a **current scope**. You can call any action inside an example group, this will call that action on the current scope.
 
 Scopes can be **nested**. Call the last method of a scope chain with a block like this:
 
