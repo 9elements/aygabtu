@@ -28,6 +28,49 @@ describe "behaviour under different gem versions" do
     end
 
     describe "failures for certain misconfigurations" do
+      def example_class
+        Class.new(super) do
+          def group_passing?
+            enclosing_group == :passing
+          end
+
+          def group_pending?
+            enclosing_group == :pending
+          end
+
+          def group_failing?
+            enclosing_group == :failing
+          end
+
+          def group_partly_failing?
+            enclosing_group == :partial
+          end
+
+          def group_no_example?
+            enclosing_group == :no_example
+          end
+
+          private
+
+          def enclosing_group
+            case full_description
+            when /\bEXAMPLE PASSING\b/
+              :passing
+            when /\bEXAMPLE PENDING\b/
+              :pending
+            when /\bEXAMPLE FAILING\b/
+              :failing
+            when /\bEXAMPLES PARTLY FAILING\b/
+              :partial
+            when /\bNO EXAMPLE\b/
+              :no_example
+            else
+              raise "unrecognized enclosing example group for example #{inspect}"
+            end
+          end
+        end
+      end
+
       it "generates failing examples" do
         examples = convert_examples(rspec_result('spec/no_match_failures_spec.rb'))
 
