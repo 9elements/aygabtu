@@ -9,11 +9,6 @@ module InvokesRspec
     {}
   end
 
-  def example_payload(rspec_example_result)
-    marshalled = rspec_example_result.fetch('exception').fetch('message')
-    Marshal.load(marshalled)
-  end
-
   def contain_only_passed_examples
     satisfy do |rspec_result|
       rspec_result['examples'].all? { |example| example['status'] == 'passed' }

@@ -29,6 +29,14 @@ module AnalyzesExamples
     def failed?
       status == :failed
     end
+
+    def exception_message
+      raw.fetch('exception').fetch('message')
+    end
+
+    def payload
+      Marshal.load(exception_message)
+    end
   end
 
   def convert_examples(result)
