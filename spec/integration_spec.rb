@@ -111,6 +111,16 @@ describe "behaviour under different gem versions" do
         end
       end
     end
+
+    it "treats nested and chained scopes equally" do
+      result = rspec_result('spec/nesting_spec.rb')
+      payloads = result['examples'].map do |example|
+        example_payload(example)
+      end
+
+      expect(payloads).to include('nested')
+      expect(payloads).to include('unnested')
+    end
   end
 
   context "the currently only gem combination, more to follow" do
