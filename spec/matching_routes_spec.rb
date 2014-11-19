@@ -102,12 +102,12 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
         routes_for_scope['requiring multiple args'] = aygabtu_matching_routes
       end
 
-      requiring_anything(true) do
-        routes_for_scope['requiring_anything true'] = aygabtu_matching_routes
+      dynamic_routes do
+        routes_for_scope['dynamic_routes'] = aygabtu_matching_routes
       end
 
-      requiring_anything(false) do
-        routes_for_scope['requiring_anything false'] = aygabtu_matching_routes
+      static_routes do
+        routes_for_scope['static_routes'] = aygabtu_matching_routes
       end
 
       namespace(:namespace).named(:not_remaining_namespace_name) do
@@ -229,8 +229,8 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
       end
     end
 
-    describe "requiring_anything scoping" do
-      context "scope", scope: 'requiring_anything true' do
+    describe "static_routes / dynamic_routes scoping" do
+      context "scope", scope: 'dynamic_routes' do
         it "matches route requiring any segment or glob" do
           expect(routes).to contain_exactly(
             be_identified_by(:with_segment),
@@ -240,7 +240,7 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
         end
       end
 
-      context "scope", scope: 'requiring_anything false' do
+      context "scope", scope: 'static_routes' do
         it "matches route not requiring any segment or glob" do
           expect(routes).not_to be_empty
           expect(routes).not_to include(be_identified_by(:with_segment))

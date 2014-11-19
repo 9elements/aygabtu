@@ -45,7 +45,7 @@ describe "Aygabtu generated features", type: :feature do
   # particular example configurations go here
 
   # must be at the very bottom
-  remaining.requiring_anything(false).visit
+  remaining.static_routes.visit
   remaining.pend "pending because route needs segments passed"
 end
 ```
@@ -212,10 +212,10 @@ end
 
 You can also use `remaining` at the very bottom to pend all remaining routes, see the initial example.
 
-### `requiring_anything`
+### `static_routes` and `dynamic_routes`
 
-* `requiring_anything(true)` matches routes which have a dynamic segment.
-* `requiring_anything(false)` matches routes which have no dynamic segment.
+* `dynamic_routes` matches routes which have a dynamic segment.
+* `static_routes` matches routes which have no dynamic segment.
 
 ## Caveats
 
