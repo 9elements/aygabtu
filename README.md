@@ -181,7 +181,7 @@ then
 
 * `namespace(:a)` (or `namespace('a')`) matches (1) and (2)
 * `namespace('a/b')` matches only (1)
-* `namespace('a/bar')` matches no of them
+* `namespace('a/bar')` matches none of them
 * `controller('foo')` matches (1) and (3)
 
 ### `action`
