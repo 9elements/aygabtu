@@ -4,7 +4,7 @@ require_relative 'action'
 require_relative 'named'
 require_relative 'visiting_with'
 require_relative 'requiring'
-require_relative 'requiring_anything'
+require_relative 'static_dynamic'
 require_relative 'remaining'
 
 module Aygabtu
@@ -29,7 +29,7 @@ module Aygabtu
         Named,
         VisitingWith,
         Requiring,
-        RequiringAnything,
+        StaticDynamic,
         Remaining
       ]
 
@@ -72,8 +72,11 @@ module Aygabtu
       end
 
       @factory_methods = COMPONENTS.map do |component|
-        component.try(:factory_method)
-      end.compact
+        [
+          component.try(:factory_method),
+          *component.try(:factory_methods)
+        ]
+      end.flatten.compact
 
       class << self
         attr_reader :factory_methods
