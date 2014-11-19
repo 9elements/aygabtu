@@ -2,7 +2,7 @@ require_relative 'namespace'
 require_relative 'controller'
 require_relative 'action'
 require_relative 'named'
-require_relative 'passing'
+require_relative 'visiting_with'
 require_relative 'requiring'
 require_relative 'requiring_anything'
 require_relative 'remaining'
@@ -14,8 +14,8 @@ module Aygabtu
         @data = data
       end
 
-      def pass_data
-        @data.fetch(:passing, {})
+      def visiting_data
+        @data.fetch(:visiting_data, {})
       end
 
       def self.blank_slate
@@ -27,7 +27,7 @@ module Aygabtu
         Controller,
         Action,
         Named,
-        Passing,
+        VisitingWith,
         Requiring,
         RequiringAnything,
         Remaining

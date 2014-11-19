@@ -11,16 +11,16 @@ module Aygabtu
       [:pass, :pend, :ignore, :covered!]
     end
 
-    def pass(pass_data = {})
+    def pass(visiting_data = {})
       each_empty_scope_segment do |scope, generator|
         generator.generate_no_match_failing_example(:pass)
       end
 
       each_scope_segment_and_route do |scope, generator, route|
-        pass_data = @scope.pass_data.merge(pass_data)
+        visiting_data = @scope.visiting_data.merge(visiting_data)
 
         mark_route(route, :pass)
-        generator.generate_example(route, pass_data)
+        generator.generate_example(route, visiting_data)
       end
     end
 

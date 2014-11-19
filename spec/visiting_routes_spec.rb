@@ -46,7 +46,7 @@ describe "aygabtu scopes and their matching routes", bundled: true, type: :featu
   end
 
   action(:route_with_two).pass(segment1: "bogus", segment2: "bogus")
-  action(:route_with_two).passing(segment1: "bogus") do
+  action(:route_with_two).visiting_with(segment1: "bogus") do
     pass(segment2: "bogus")
   end
 end

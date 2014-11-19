@@ -187,7 +187,7 @@ When called with multiple arguments, the resulting scope breaks up internally, a
 
 When called with multiple arguments, the resulting scope breaks up internally, and for each name, a route must match. So `named(:posts, :comments)` is just a short-hand for using `named` twice.
 
-### `passing`
+### `visiting_with`
 
 When the `pass` action is used, the scope uses the given parameters for building the URLs. See the documentation for the `pass` action.
 
