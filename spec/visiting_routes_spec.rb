@@ -30,24 +30,27 @@ describe "aygabtu scopes and their matching routes", bundled: true, type: :featu
   def aygabtu_assertions
   end
 
-  action(:route_without).pass
+  action(:route_without).visit
   context "with an additional parameter" do
     def assert_path(path)
       expect(URI.parse(path).query).to be == "additional_parameter=bogus"
     end
 
-    action(:route_without).pass(additional_parameter: "bogus")
+    action(:route_without).visit_with(additional_parameter: "bogus")
   end
 
-  action(:route_with).pass(segment1: "bogus")
+  action(:route_with).visit_with(segment1: "bogus")
+  action(:route_with).visiting_with(segment1: "bogus") do
+    visit
+  end
 
   action(:route_with) do
-    pass(segment1: "bogus")
+    visit_with(segment1: "bogus")
   end
 
-  action(:route_with_two).pass(segment1: "bogus", segment2: "bogus")
+  action(:route_with_two).visit_with(segment1: "bogus", segment2: "bogus")
   action(:route_with_two).visiting_with(segment1: "bogus") do
-    pass(segment2: "bogus")
+    visit_with(segment2: "bogus")
   end
 end
 

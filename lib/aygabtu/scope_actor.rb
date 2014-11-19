@@ -8,20 +8,24 @@ module Aygabtu
     end
 
     def self.actions
-      [:pass, :pend, :ignore, :covered!]
+      [:visit_with, :visit, :pend, :ignore, :covered!]
     end
 
-    def pass(visiting_data = {})
+    def visit_with(visiting_data)
       each_empty_scope_segment do |scope, generator|
-        generator.generate_no_match_failing_example(:pass)
+        generator.generate_no_match_failing_example(:visit)
       end
 
       each_scope_segment_and_route do |scope, generator, route|
         visiting_data = @scope.visiting_data.merge(visiting_data)
 
-        mark_route(route, :pass)
+        mark_route(route, :visit)
         generator.generate_example(route, visiting_data)
       end
+    end
+
+    def visit
+      visit_with({})
     end
 
     def ignore(reason)
@@ -68,7 +72,7 @@ module Aygabtu
 
     def route_action_valid?(route, action)
       previous_actions_considered = route.marks.keys
-      previous_actions_considered.delete(:pass) if action == :pass # creating more than one :pass example per route is allowed
+      previous_actions_considered.delete(:visit) if action == :visit # creating more than one :visit example per route is allowed
       route.marks.values_at(*previous_actions_considered).all?(&:empty?)
     end
 

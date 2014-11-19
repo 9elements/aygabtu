@@ -10,8 +10,8 @@ Rails.application.routes.draw do
   get 'bogus', to: 'bogus#doubly_pended'
   get 'bogus', to: 'bogus#doubly_ignored'
   get 'bogus', to: 'bogus#pended_and_ignored'
-  get 'bogus', to: 'bogus#passed_to_and_ignored'
-  get 'bogus', to: 'bogus#passed_to_and_pended'
+  get 'bogus', to: 'bogus#visited_and_ignored'
+  get 'bogus', to: 'bogus#visited_and_pended'
 end
 
 describe "failures for missing route matches", bundled: true do
@@ -27,8 +27,8 @@ describe "failures for missing route matches", bundled: true do
 
   context "not failing when a route matches" do
     context "EXAMPLE PASSING" do
-      action(:visited).pass
-      named(:named).pass
+      action(:visited).visit
+      named(:named).visit
     end
 
     context "EXAMPLE PENDING" do
@@ -41,15 +41,15 @@ describe "failures for missing route matches", bundled: true do
   end
 
   context "EXAMPLE FAILING because no route matches" do
-    action(:nonexiting).pass
+    action(:nonexiting).visit
     action(:nonexiting).pend "bogus reason"
     action(:nonexiting).ignore "bogus reason"
   end
 
   context "EXAMPLES PARTLY FAILING because one of the given routes does not match" do
-    action(:visited, :nonexisting).pass
+    action(:visited, :nonexisting).visit
 
-    named(:named, :nonexisting).pass
+    named(:named, :nonexisting).visit
   end
 
   context "erroneously applying two actions to same route" do

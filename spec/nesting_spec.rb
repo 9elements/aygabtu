@@ -22,9 +22,9 @@ describe "nesting and chaining scopes", bundled: true do
   end
 
   namespace(:namespace) do
-    action(:action).pass(segment: "nested")
+    action(:action).visit_with(segment: "nested")
   end
 
-  namespace(:namespace).action(:action).pass(segment: "unnested")
+  namespace(:namespace).action(:action).visit_with(segment: "unnested")
 end
 

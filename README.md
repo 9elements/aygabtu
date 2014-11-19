@@ -45,7 +45,7 @@ describe "Aygabtu generated features", type: :feature do
   # particular example configurations go here
 
   # must be at the very bottom
-  remaining.requiring_anything(false).pass
+  remaining.requiring_anything(false).visit
   remaining.pend "pending because route needs segments passed"
 end
 ```
@@ -89,7 +89,7 @@ namespace(:web).controller(:posts) do
     ...
   end
 
-  pass(some_param: "value")
+  visit_with(some_param: "value")
 end
 ```
 
@@ -122,15 +122,15 @@ Aygabtu keeps track of actions applied to routes, and treats it as an error when
 * a route is hit with two different actions (having both a pending example and a regular one for the same route means you probably missed something)
 * a route is hit twice with the same action (which forces you to structure your examples and keep things tidy)
 
-As an exception, you can create multiple regular examples for the same route using `pass`. Please consider if using a vanilla rspec/capybara spec would make more sense in that case.
+As an exception, you can create multiple regular examples for the same route using `visit` and `visit_with`. Please consider if using a vanilla rspec/capybara spec would make more sense in that case.
 
 ## List of actions
 
-### `pass`
+### `visit` and `visit_with`
 
-Creates examples for every matching route, passing data for dynamic URL segments and query string parameters.
+Creates examples for every matching route. Use `visit_with` for passing data for dynamic URL segments and query string parameters.
 
-Data can be passed as an argument to `pass` and using the `passing` scope method. The deeper the nesting or chaining (the call to `pass` is always the deepest), the higher the precedence.
+Data can be passed as an argument to `visit_with` and using the `visiting_with` scope method. The deeper the nesting or chaining (the call to `visit` or `visit_with` is always the deepest), the higher the precedence.
 
 Data is passed as a hash, where keys are parameter or dynamic segment names, and values are passed after being converted to strings. Symbol values are special: they are interpreted as method names within the example and used to obtain the actual value. Example:
 
@@ -141,7 +141,7 @@ controller(:posts) do
     post.id
   end
 
-  pass(id: :post_id)
+  visit_with(id: :post_id)
 end
 ```
 
@@ -189,7 +189,7 @@ When called with multiple arguments, the resulting scope breaks up internally, a
 
 ### `visiting_with`
 
-When the `pass` action is used, the scope uses the given parameters for building the URLs. See the documentation for the `pass` action.
+When the `visit` or `visit_with` actions are used, the scope uses the given parameters for building the URLs. See the documentation for the `visit` action.
 
 ### `remaining` and `requiring`
 
@@ -205,8 +205,8 @@ controller(:posts) do
     ...
   end
 
-  requiring(:id).passing(id: :posts_id).pass # creates examples for all member routes
-  remaining.pass # creates examples for all collection routes (:index and :new)
+  requiring(:id).visiting_with(id: :posts_id).visit # creates examples for all member routes
+  remaining.visit # creates examples for all collection routes (:index and :new)
 end
 ```
 

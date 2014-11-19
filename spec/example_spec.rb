@@ -42,7 +42,7 @@ describe "anatonomy of an aygabtu example" do
         spy.dynamic_segment
       end
 
-      pass(segment1: 'fixed', segment2: :dynamic_segment)
+      visit_with(segment1: 'fixed', segment2: :dynamic_segment)
     end
   end
 
