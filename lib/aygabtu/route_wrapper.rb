@@ -72,14 +72,14 @@ module Aygabtu
       "passes aygabtu assertions for #{inspect}"
     end
 
-    def format(pass_data)
-      pass_data = pass_data.stringify_keys
+    def format(visiting_data)
+      visiting_data = visiting_data.stringify_keys
 
-      query_data = pass_data.except(*@journey_route.parts.map(&:to_s))
-      pass_data = pass_data.except(*query_data.keys)
+      query_data = visiting_data.except(*@journey_route.parts.map(&:to_s))
+      visiting_data = visiting_data.except(*query_data.keys)
 
-      pass_data.symbolize_keys! # format expects symbols, but we deal with strings in all other places
-      path = @journey_route.format(pass_data)
+      visiting_data.symbolize_keys! # format expects symbols, but we deal with strings in all other places
+      path = @journey_route.format(visiting_data)
 
       if query_data.empty?
         path

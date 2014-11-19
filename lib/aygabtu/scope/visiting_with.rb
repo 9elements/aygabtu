@@ -1,9 +1,9 @@
 module Aygabtu
   module Scope
     module VisitingWith
-      def visiting_with(pass_data)
-        passing = self.visiting_data.merge(pass_data)
-        new_data = @data.dup.merge(visiting_data: passing)
+      def visiting_with(visiting_data)
+        visiting_data = self.visiting_data.merge(visiting_data)
+        new_data = @data.dup.merge(visiting_data: visiting_data)
         self.class.new(new_data)
       end
 

@@ -70,19 +70,19 @@ module Aygabtu
 
       attr_accessor :aygabtu_path_to_visit
 
-      def aygabtu_pass_to_route(id, pass_data)
+      def aygabtu_pass_to_route(id, visiting_data)
         route = self.class.aygabtu_handle.routes.find { |a_route| a_route.object_id == id }
 
-        pass_data = pass_data.clone
-        pass_data.keys.each do |key|
-          value = pass_data[key]
-          pass_data[key] = aygabtu_fetch_symbolic_pass_value(value) if value.is_a?(Symbol)
+        visiting_data = visiting_data.clone
+        visiting_data.keys.each do |key|
+          value = visiting_data[key]
+          visiting_data[key] = aygabtu_fetch_symbolic_pass_value(value) if value.is_a?(Symbol)
         end
 
-        missing_keys = route.really_required_keys - pass_data.keys.map(&:to_s)
+        missing_keys = route.really_required_keys - visiting_data.keys.map(&:to_s)
 
         if missing_keys.empty?
-          route.format(pass_data)
+          route.format(visiting_data)
         else
           raise "Route is missing required key(s) #{missing_keys.map(&:inspect).join(', ')}"
         end
