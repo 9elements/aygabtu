@@ -55,6 +55,15 @@ This will get you up and running with
 * an example for every route that does not require any dynamic segment to be passed, which visits that route and asserts the HTTP status is 200 and the url did not change (because of a redirect)
 * a pending example for every other route
 
+Roughly, the generated examples will look like this (they are not visible directly):
+
+```
+it "generated description here" do
+  visit generated_path
+  aygabtu_assertions
+end
+```
+
 Continue reading "Scope, scope chains and actions" for the fundamental notions.
 
 ## Features
