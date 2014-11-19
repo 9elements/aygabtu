@@ -27,6 +27,10 @@ describe "behaviour under different gem versions" do
       expect(rspec_result('spec/example_spec.rb')).to contain_only_passed_examples
     end
 
+    it "passes visiting with parameters tests" do
+      expect(rspec_result('spec/visiting_routes_spec.rb')).to contain_only_passed_examples
+    end
+
     describe "failures for certain misconfigurations" do
       def example_class
         Class.new(super) do
