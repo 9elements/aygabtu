@@ -21,6 +21,10 @@ Rails.application.routes.draw do
       get 'bogus', identified_by(:namespaced_controller_route).merge(to: 'controller_a#bogus')
 
       get 'bogus', identified_by(:namespaced_and_named).merge(to: 'bogus#bogus', as: 'name')
+
+      namespace :another_namespace do
+        get 'bogus', identified_by(:deeply_namespaced).merge(to: 'bogus#bogus')
+      end
     end
 
     get 'bogus', identified_by(:action_route).merge(to: 'bogus#some_action')
@@ -180,7 +184,8 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
         it "matches namespaced route" do
           expect(routes).to contain_exactly(
             be_identified_by(:namespaced_controller_route),
-            be_identified_by(:namespaced_and_named)
+            be_identified_by(:namespaced_and_named),
+            be_identified_by(:deeply_namespaced)
           )
         end
       end
