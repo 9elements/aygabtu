@@ -1,5 +1,4 @@
-require_relative 'namespace'
-require_relative 'controller'
+require_relative 'namespace_controller'
 require_relative 'action'
 require_relative 'named'
 require_relative 'visiting_with'
@@ -23,8 +22,7 @@ module Aygabtu
       end
 
       COMPONENTS = [
-        Namespace,
-        Controller,
+        NamespaceController,
         Action,
         Named,
         VisitingWith,
