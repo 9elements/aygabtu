@@ -151,8 +151,8 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
           expect(routes).to include(be_identified_by(:controller_route))
         end
 
-        it "matches namespaced controller route" do
-          expect(routes).to include(be_identified_by(:namespaced_controller_route))
+        it "does not match namespaced controller route" do
+          expect(routes).not_to include(be_identified_by(:namespaced_controller_route))
         end
       end
 

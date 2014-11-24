@@ -171,18 +171,17 @@ As a short-hand, you can use `covered!` instead of `ignore` for routes that need
 
 ### `controller` and `namespace`
 
-These go hand in hand, and are best explained by an example. Say you have controllers
+These two go hand in hand. They determine how routes routing to a controller are matched, depending on the fully qualified name of the controller.
+So if you have a `Customer::ReceiptsController`, translate the name to `customer/receipts` and start thinking about this like a path
+on a filesystem (where directories are delimited by slashes). Imagine sitting at the root of such a filesytem and looking around.
 
-1. `A::B::FooController`
-2. `A::BarController`
-3. `FooController` (or, more precisely, `::FooController`)
+When `namespace` is chained or nested, this has the effect of joining path segments. In addition, `namespace` already accepts fragments of paths
+containing slashes. So for example, by itself,
+`namespace(:foo).namespace(:bar)` and `namespace('foo/bar')` have the same effect of matching routes to controllers below `Foo::Bar`.
 
-then
-
-* `namespace(:a)` (or `namespace('a')`) matches (1) and (2)
-* `namespace('a/b')` matches only (1)
-* `namespace('a/bar')` matches none of them
-* `controller('foo')` matches (1) and (3)
+When the `controller` scope method is used, matching is narrowed down to exactly one controller. So `controller(:root)` matches routes to your
+`::RootController`, and both `namespace(:foo).controller(:bar)` and `controller('foo/bar')` match routes to `::Foo::BarController`. When
+`controller` is used, there is no ambiguity as to what controller by the given name your scope narrows down to.
 
 ### `action`
 
