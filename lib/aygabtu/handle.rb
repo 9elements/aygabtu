@@ -5,10 +5,16 @@ module Aygabtu
   class Handle
 
     def routes
-      @routes ||= Rails.application.routes.set.map do |journey_route|
+      @routes ||= rails_application_routes.set.map do |journey_route|
         RouteWrapper.new(journey_route)
       end.select(&:get?).reject(&:internal?)
     end
 
+    private
+
+    def rails_application_routes
+      @rails_application_routes ||= Rails.application.routes
+    end
+    attr_writer :rails_application_routes
   end
 end

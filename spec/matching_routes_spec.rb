@@ -11,7 +11,10 @@ RSpec.configure do |rspec|
   end
 end
 
-Rails.application.routes.draw do
+class EngineOne < Rails::Engine
+end
+
+EngineOne.instance.routes.draw do
   extend IdentifiesRoutes
 
   namespace "not_remaining" do
@@ -52,6 +55,7 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
 
   context "wrapping aygabtu declarations for cleanliness only here" do
     include Aygabtu::RSpec.example_group_module
+    aygabtu_handle.send :rails_application_routes=, EngineOne.instance.routes
 
     # routes matched by aygabtu in different contexts are collected here.
 
