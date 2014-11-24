@@ -92,6 +92,10 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
       end
     end
 
+    namespace('namespace/another_namespace') do
+      routes_for_scope['namespace namespace/another_namespace'] = aygabtu_matching_routes
+    end
+
     named(:implicitly_named) do
       routes_for_scope['named implicitly_named'] = aygabtu_matching_routes
     end
@@ -194,10 +198,18 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
         end
       end
 
-      context "scope", scope: 'namespace namespace namespace another_namespace' do
+      shared_examples_for "namespace nesting" do
         it "matches deeply namespaced route" do
           expect(routes).to contain_exactly(be_identified_by(:deeply_namespaced))
         end
+      end
+
+      context "scope", scope: 'namespace namespace namespace another_namespace' do
+        include_examples "namespace nesting"
+      end
+
+      context "scope", scope: 'namespace namespace/another_namespace' do
+        include_examples "namespace nesting"
       end
     end
 
