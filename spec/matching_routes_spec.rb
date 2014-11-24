@@ -86,6 +86,10 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
       controller(:controller_a) do
         routes_for_scope['namespace namespace controller controller_a'] = aygabtu_matching_routes
       end
+
+      namespace(:another_namespace) do
+        routes_for_scope['namespace namespace namespace another_namespace'] = aygabtu_matching_routes
+      end
     end
 
     named(:implicitly_named) do
@@ -187,6 +191,12 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
             be_identified_by(:namespaced_and_named),
             be_identified_by(:deeply_namespaced)
           )
+        end
+      end
+
+      context "scope", scope: 'namespace namespace namespace another_namespace' do
+        it "matches deeply namespaced route" do
+          expect(routes).to contain_exactly(be_identified_by(:deeply_namespaced))
         end
       end
     end
