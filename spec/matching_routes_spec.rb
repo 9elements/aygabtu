@@ -47,7 +47,7 @@ end
 EngineTwo.instance.routes.draw do
   extend IdentifiesRoutes
 
-  get 'bogus', identified_by(:pending_route).merge(to: 'bogus#pending')
+  get 'bogus', identified_by(:ignored_route).merge(to: 'bogus#ignore')
   get 'bogus', identified_by(:remaining_route).merge(to: 'bogus#bogus')
 end
 
@@ -137,7 +137,10 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
     include Aygabtu::RSpec.example_group_module
     aygabtu_handle.send :rails_application_routes=, EngineTwo.instance.routes
 
-    action(:pending).pend "make this route not remaining for aygabtu"
+    # any action would mark this route as not remaining,
+    # but only :ignore will not generate an example which would
+    # mess with our test setup
+    action(:ignore).ignore "make this route not remaining for aygabtu"
 
     remaining do
       routes_for_scope['remaining'] = aygabtu_matching_routes
