@@ -167,6 +167,17 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
       end
     end
 
+    describe 'namespace scoping' do
+      context "scope", scope: 'namespace namespace' do
+        it "matches namespaced route" do
+          expect(routes).to contain_exactly(
+            be_identified_by(:namespaced_controller_route),
+            be_identified_by(:namespaced_and_named),
+            be_identified_by(:deeply_namespaced)
+          )
+      end
+    end
+
     describe 'action scoping' do
       context "scope", scope: 'action some_action' do
         it "matches route with given action" do
@@ -179,18 +190,6 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
           expect(routes).to contain_exactly(
             be_identified_by(:action_route),
             be_identified_by(:another_action_route)
-          )
-        end
-      end
-    end
-
-    describe 'namespace scoping' do
-      context "scope", scope: 'namespace namespace' do
-        it "matches namespaced route" do
-          expect(routes).to contain_exactly(
-            be_identified_by(:namespaced_controller_route),
-            be_identified_by(:namespaced_and_named),
-            be_identified_by(:deeply_namespaced)
           )
         end
       end
