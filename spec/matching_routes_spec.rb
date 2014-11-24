@@ -40,9 +40,16 @@ EngineOne.instance.routes.draw do
 
     get 'implicitly_named', identified_by(:implicitly_named).merge(to: 'bogus#bogus')
     get 'bogus', identified_by(:explicitly_named).merge(to: 'bogus#bogus', as: :explicitly_named)
-
   end
+end
 
+class EngineTwo < Rails::Engine
+end
+
+EngineTwo.instance.routes.draw do
+  extend IdentifiesRoutes
+
+  get 'bogus', identified_by(:pending_route).merge(to: 'bogus#pending')
   get 'bogus', identified_by(:remaining_route).merge(to: 'bogus#bogus')
 end
 
@@ -53,7 +60,7 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
     @routes_for_scope ||= {}
   end
 
-  context "wrapping aygabtu declarations for cleanliness only here" do
+  context "EngineOne aygabtu route declarations" do
     include Aygabtu::RSpec.example_group_module
     aygabtu_handle.send :rails_application_routes=, EngineOne.instance.routes
 
@@ -121,10 +128,14 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
       namespace(:namespace).named(:not_remaining_namespace_name) do
         routes_for_scope['namespaced and named'] = aygabtu_matching_routes
       end
-
-      ## MUST BE AT THE BOTTOM
-      ignore "this makes all routes except the 'remaining' one remaining for aygabtu"
     end
+  end
+
+  context "EngineTwo aygabtu route declarations" do
+    include Aygabtu::RSpec.example_group_module
+    aygabtu_handle.send :rails_application_routes=, EngineTwo.instance.routes
+
+    action(:pending).pend "make this route not remaining for aygabtu"
 
     remaining do
       routes_for_scope['remaining'] = aygabtu_matching_routes
