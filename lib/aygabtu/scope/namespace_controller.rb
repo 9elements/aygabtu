@@ -3,13 +3,16 @@ module Aygabtu
     module NamespaceController
       def namespace(name)
         raise "nesting/chaining namespace in/after controller makes no sense" if @data[:controller]
+        raise "nesting/chaining namespace in/after action makes no sense" if @data[:action]
+
         new_namespace = Pathname(@data[:namespace] || '').join(name.to_s).to_s
         new_data = @data.dup.merge(namespace: new_namespace)
         self.class.new(new_data)
       end
 
       def controller(name)
-        raise "nesting/chaining controller in/after controller makes no sense" if @data[:controller]
+        raise "nesting/chaining controller scopes makes no sense" if @data[:controller]
+        raise "nesting/chaining namespace in/after action makes no sense" if @data[:action]
 
         new_controller = name.to_s
         new_data = @data.dup.merge(controller: new_controller)
