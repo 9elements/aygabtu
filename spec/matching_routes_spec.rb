@@ -25,7 +25,7 @@ EngineOne.instance.routes.draw do
     get 'bogus', identified_by(:namespaced_and_named).merge(to: 'bogus#bogus', as: 'name')
 
     namespace :another_namespace do
-      get 'bogus', identified_by(:deeply_namespaced).merge(to: 'bogus#bogus')
+      get 'bogus', identified_by(:deeply_namespaced).merge(to: 'controller_a#bogus')
     end
   end
 
@@ -82,6 +82,10 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
 
     namespace('namespace') do
       routes_for_scope['namespace namespace'] = aygabtu_matching_routes
+
+      controller(:controller_a) do
+        routes_for_scope['namespace namespace controller controller_a'] = aygabtu_matching_routes
+      end
     end
 
     named(:implicitly_named) do
@@ -145,6 +149,20 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
       self.class.routes
     end
 
+    shared_examples_for "namespaced controller scoping" do
+      it "does not match unnamespaced controller route" do
+        expect(routes).not_to include(be_identified_by(:controller_route))
+      end
+
+      it "matches namespaced controller route" do
+        expect(routes).to include(be_identified_by(:namespaced_controller_route))
+      end
+
+      it "does not match controller route namespaced deeper" do
+        expect(routes).not_to include(be_identified_by(:deeply_namespaced))
+      end
+    end
+
     describe 'controller scoping' do
       context "scope", scope: 'controller controller_a' do
         it "matches unnamespaced controller route" do
@@ -157,13 +175,7 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
       end
 
       context "scope", scope: 'controller namespace/controller_a' do
-        it "does not match unnamespaced controller route" do
-          expect(routes).not_to include(be_identified_by(:controller_route))
-        end
-
-        it "matches namespaced controller route" do
-          expect(routes).to include(be_identified_by(:namespaced_controller_route))
-        end
+        include_examples "namespaced controller scoping"
       end
     end
 
@@ -175,6 +187,13 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
             be_identified_by(:namespaced_and_named),
             be_identified_by(:deeply_namespaced)
           )
+        end
+      end
+    end
+
+    describe 'combined namespace controller scoping' do
+      context "scope", scope: 'namespace namespace controller controller_a' do
+        include_examples "namespaced controller scoping"
       end
     end
 
