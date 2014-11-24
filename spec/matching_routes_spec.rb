@@ -17,30 +17,28 @@ end
 EngineOne.instance.routes.draw do
   extend IdentifiesRoutes
 
-  namespace "not_remaining" do
-    get 'bogus', identified_by(:controller_route).merge(to: 'controller_a#bogus')
+  get 'bogus', identified_by(:controller_route).merge(to: 'controller_a#bogus')
 
-    namespace "namespace" do
-      get 'bogus', identified_by(:namespaced_controller_route).merge(to: 'controller_a#bogus')
+  namespace "namespace" do
+    get 'bogus', identified_by(:namespaced_controller_route).merge(to: 'controller_a#bogus')
 
-      get 'bogus', identified_by(:namespaced_and_named).merge(to: 'bogus#bogus', as: 'name')
+    get 'bogus', identified_by(:namespaced_and_named).merge(to: 'bogus#bogus', as: 'name')
 
-      namespace :another_namespace do
-        get 'bogus', identified_by(:deeply_namespaced).merge(to: 'bogus#bogus')
-      end
+    namespace :another_namespace do
+      get 'bogus', identified_by(:deeply_namespaced).merge(to: 'bogus#bogus')
     end
-
-    get 'bogus', identified_by(:action_route).merge(to: 'bogus#some_action')
-    get 'bogus', identified_by(:another_action_route).merge(to: 'bogus#other_action')
-
-    get ':segment', identified_by(:with_segment).merge(to: 'bogus#bogus')
-    get '*glob', identified_by(:with_glob).merge(to: 'bogus#bogus')
-
-    get ':first_segment/:second_segment', identified_by(:two_segments).merge(to: 'bogus#bogus')
-
-    get 'implicitly_named', identified_by(:implicitly_named).merge(to: 'bogus#bogus')
-    get 'bogus', identified_by(:explicitly_named).merge(to: 'bogus#bogus', as: :explicitly_named)
   end
+
+  get 'bogus', identified_by(:action_route).merge(to: 'bogus#some_action')
+  get 'bogus', identified_by(:another_action_route).merge(to: 'bogus#other_action')
+
+  get ':segment', identified_by(:with_segment).merge(to: 'bogus#bogus')
+  get '*glob', identified_by(:with_glob).merge(to: 'bogus#bogus')
+
+  get ':first_segment/:second_segment', identified_by(:two_segments).merge(to: 'bogus#bogus')
+
+  get 'implicitly_named', identified_by(:implicitly_named).merge(to: 'bogus#bogus')
+  get 'bogus', identified_by(:explicitly_named).merge(to: 'bogus#bogus', as: :explicitly_named)
 end
 
 class EngineTwo < Rails::Engine
@@ -66,68 +64,60 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
 
     # routes matched by aygabtu in different contexts are collected here.
 
-    namespace :not_remaining do
-      # namespacing all routes (above) and all aygabtu scopings here except for
-      # the 'remaining' case makes all these cases read as if both the remaining route
-      # and this namespacing were not there.
-      # So ignore them on first reading (except for the fact the route name includes this namespace).
-      # This trick simplifies coexistence with the 'remaining' case. See bottom of this block.
+    controller(:controller_a) do
+      routes_for_scope['controller controller_a'] = aygabtu_matching_routes
+    end
 
-      controller(:controller_a) do
-        routes_for_scope['controller controller_a'] = aygabtu_matching_routes
-      end
+    controller('namespace/controller_a') do
+      routes_for_scope['controller namespace/controller_a'] = aygabtu_matching_routes
+    end
 
-      controller('namespace/controller_a') do
-        routes_for_scope['controller namespace/controller_a'] = aygabtu_matching_routes
-      end
+    action(:some_action) do
+      routes_for_scope['action some_action'] = aygabtu_matching_routes
+    end
 
-      action(:some_action) do
-        routes_for_scope['action some_action'] = aygabtu_matching_routes
-      end
+    action(:some_action, :other_action) do
+      routes_for_scope['action with multiple args'] = aygabtu_matching_routes
+    end
 
-      action(:some_action, :other_action) do
-        routes_for_scope['action with multiple args'] = aygabtu_matching_routes
-      end
+    namespace('namespace') do
+      routes_for_scope['namespace namespace'] = aygabtu_matching_routes
+    end
 
-      namespace('namespace') do
-        routes_for_scope['namespace namespace'] = aygabtu_matching_routes
-      end
+    named(:implicitly_named) do
+      routes_for_scope['named implicitly_named'] = aygabtu_matching_routes
+    end
 
-      named(:not_remaining_implicitly_named) do
-        routes_for_scope['named implicitly_named'] = aygabtu_matching_routes
-      end
+    named(:explicitly_named) do
+      routes_for_scope['named explicitly_named'] = aygabtu_matching_routes
+    end
 
-      named(:not_remaining_explicitly_named) do
-        routes_for_scope['named explicitly_named'] = aygabtu_matching_routes
-      end
+    named(:explicitly_named, :implicitly_named) do
+      routes_for_scope['named with multiple args'] = aygabtu_matching_routes
+    end
 
-      named(:not_remaining_explicitly_named, :not_remaining_implicitly_named) do
-        routes_for_scope['named with multiple args'] = aygabtu_matching_routes
-      end
+    requiring(:segment) do
+      routes_for_scope['requiring segment'] = aygabtu_matching_routes
+    end
 
-      requiring(:segment) do
-        routes_for_scope['requiring segment'] = aygabtu_matching_routes
-      end
+    requiring(:glob) do
+      routes_for_scope['requiring glob'] = aygabtu_matching_routes
+    end
 
-      requiring(:glob) do
-        routes_for_scope['requiring glob'] = aygabtu_matching_routes
-      end
+    requiring(:first_segment, :second_segment) do
+      routes_for_scope['requiring multiple args'] = aygabtu_matching_routes
+    end
 
-      requiring(:first_segment, :second_segment) do
-        routes_for_scope['requiring multiple args'] = aygabtu_matching_routes
-      end
+    dynamic_routes do
+      routes_for_scope['dynamic_routes'] = aygabtu_matching_routes
+    end
 
-      dynamic_routes do
-        routes_for_scope['dynamic_routes'] = aygabtu_matching_routes
-      end
+    static_routes do
+      routes_for_scope['static_routes'] = aygabtu_matching_routes
+    end
 
-      static_routes do
-        routes_for_scope['static_routes'] = aygabtu_matching_routes
-      end
-
-      namespace(:namespace).named(:not_remaining_namespace_name) do
-        routes_for_scope['namespaced and named'] = aygabtu_matching_routes
-      end
+    namespace(:namespace).named(:namespace_name) do
+      routes_for_scope['namespaced and named'] = aygabtu_matching_routes
     end
   end
 

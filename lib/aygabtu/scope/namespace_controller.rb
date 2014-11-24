@@ -31,14 +31,15 @@ module Aygabtu
         return false if (namespace || controller) && !route.controller
         return super unless namespace || controller
 
-        namespace = Pathname(namespace || '')
+        namespace = Pathname('/').join(namespace || '')
 
         if controller && controller.include?('/')
           path = namespace.join(controller).to_s
-          route.controller == path
+          '/' + route.controller == path
         else
+          ns_with_trailing_slash = namespace.to_s == '/' ? '/' : namespace.to_s + '/'
           (!controller or route.controller_basename == controller) &&
-            ((route.controller_namespace || '') + '/').start_with?(namespace.to_s + '/')
+            ('/' + (route.controller_namespace || '') + '/').start_with?(ns_with_trailing_slash)
         end && super
       end
 
