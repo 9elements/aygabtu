@@ -26,7 +26,7 @@ module Aygabtu
         "self.aygabtu_path_to_visit = aygabtu_pass_to_route(#{route.object_id}, #{visiting_data.inspect})",
         "aygabtu_example_for(aygabtu_path_to_visit)"
       ]
-      message = "passes aygabtu assertions for #{route.inspect}"
+      message = it_message(route, visiting_data)
 
       "it(#{message.inspect}) { #{statements.join('; ')} }"
     end
@@ -36,7 +36,7 @@ module Aygabtu
       # I could not find a way of doing this in such a way that RSpec actually takes the reason for
       # the pending string instead of "Not yet implemented".
 
-      message = "passes aygabtu assertions for #{route.inspect}"
+      message = pending_message(route)
 
       "it(#{message.inspect}, skip: #{reason.inspect})"
     end
@@ -45,6 +45,14 @@ module Aygabtu
       error_message = "No matching route (action was: #{action.inspect}, diagnostics: #{@scope.inspect}"
 
       "it('is treated as an error by aygabtu when no route matches') { raise #{error_message.inspect} }"
+    end
+
+    def it_message(route, visiting_data)
+      "passes aygabtu assertions for #{route.inspect}"
+    end
+
+    def pending_message(route)
+      "passes aygabtu assertions for #{route.inspect}"
     end
   end
 end
