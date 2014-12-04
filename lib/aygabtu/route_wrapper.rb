@@ -68,10 +68,6 @@ module Aygabtu
       end
     end
 
-    def example_message
-      "passes aygabtu assertions for #{inspect}"
-    end
-
     def format(visiting_data)
       visiting_data = visiting_data.stringify_keys
 

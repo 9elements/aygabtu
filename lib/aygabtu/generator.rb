@@ -26,7 +26,9 @@ module Aygabtu
         "self.aygabtu_path_to_visit = aygabtu_pass_to_route(#{route.object_id}, #{visiting_data.inspect})",
         "aygabtu_example_for(aygabtu_path_to_visit)"
       ]
-      "it(#{route.example_message.inspect}) { #{statements.join('; ')} }"
+      message = "passes aygabtu assertions for #{route.inspect}"
+
+      "it(#{message.inspect}) { #{statements.join('; ')} }"
     end
 
     def pending_example(route, reason)
@@ -34,7 +36,9 @@ module Aygabtu
       # I could not find a way of doing this in such a way that RSpec actually takes the reason for
       # the pending string instead of "Not yet implemented".
 
-      "it(#{route.example_message.inspect}, skip: #{reason.inspect})"
+      message = "passes aygabtu assertions for #{route.inspect}"
+
+      "it(#{message.inspect}, skip: #{reason.inspect})"
     end
 
     def no_match_failing_example(action)
