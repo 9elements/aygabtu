@@ -48,7 +48,13 @@ module Aygabtu
     end
 
     def it_message(route, visiting_data)
-      "passes aygabtu assertions for #{route.inspect}"
+      params_message = if visiting_data.empty?
+        "without parameters"
+      else
+        "with parameters #{visiting_data.inspect}"
+      end
+
+      "passes aygabtu assertions for #{route.inspect} #{params_message}"
     end
 
     def pending_message(route)
