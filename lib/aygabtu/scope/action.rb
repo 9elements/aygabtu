@@ -2,7 +2,7 @@ module Aygabtu
   module Scope
     module Action
       def action(*actions)
-        raise "nesting/chaining controller in/after action makes no sense" if @data[:action]
+        raise "nesting/chaining action scopes makes no sense" if @data[:action]
 
         new_data = @data.dup.merge(actions: actions.map(&:to_s))
         self.class.new(new_data)
