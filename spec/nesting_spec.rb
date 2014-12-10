@@ -2,15 +2,19 @@ require 'rails_application_helper'
 
 require 'aygabtu/rspec'
 
-Rails.application.routes.draw do
-  scope module: :namespace do
-    get 'for_action1', to: 'bogus#action1'
-    get 'for_action2', to: 'bogus#action2'
-  end
-end
+require 'support/aygabtu_sees_routes'
 
 describe "nesting and chaining scopes" do
+  extend AygabtuSeesRoutes
+
   include Aygabtu::RSpec.example_group_module
+
+  aygabtu_sees_routes do
+    scope module: :namespace do
+      get 'for_action1', to: 'bogus#action1'
+      get 'for_action2', to: 'bogus#action2'
+    end
+  end
 
   context "asserting the right route is being visited" do
     before do
