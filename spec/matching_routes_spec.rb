@@ -3,52 +3,13 @@ require 'rails_application_helper'
 require 'aygabtu/rspec'
 
 require 'support/identifies_routes'
+require 'support/aygabtu_sees_routes'
 
 RSpec.configure do |rspec|
   rspec.register_ordering(:honors_final) do |items|
     final, nonfinal = items.partition { |item| item.metadata[:final] }
     [*nonfinal.shuffle, *final]
   end
-end
-
-class EngineOne < Rails::Engine
-end
-
-EngineOne.instance.routes.draw do
-  extend IdentifiesRoutes
-
-  get 'bogus', identified_by(:controller_route).merge(to: 'controller_a#bogus')
-
-  namespace "namespace" do
-    get 'bogus', identified_by(:namespaced_controller_route).merge(to: 'controller_a#bogus')
-
-    get 'bogus', identified_by(:namespaced_and_named).merge(to: 'bogus#bogus', as: 'name')
-
-    namespace :another_namespace do
-      get 'bogus', identified_by(:deeply_namespaced).merge(to: 'controller_a#bogus')
-    end
-  end
-
-  get 'bogus', identified_by(:action_route).merge(to: 'bogus#some_action')
-  get 'bogus', identified_by(:another_action_route).merge(to: 'bogus#other_action')
-
-  get ':segment', identified_by(:with_segment).merge(to: 'bogus#bogus')
-  get '*glob', identified_by(:with_glob).merge(to: 'bogus#bogus')
-
-  get ':first_segment/:second_segment', identified_by(:two_segments).merge(to: 'bogus#bogus')
-
-  get 'implicitly_named', identified_by(:implicitly_named).merge(to: 'bogus#bogus')
-  get 'bogus', identified_by(:explicitly_named).merge(to: 'bogus#bogus', as: :explicitly_named)
-end
-
-class EngineTwo < Rails::Engine
-end
-
-EngineTwo.instance.routes.draw do
-  extend IdentifiesRoutes
-
-  get 'bogus', identified_by(:ignored_route).merge(to: 'bogus#ignore')
-  get 'bogus', identified_by(:remaining_route).merge(to: 'bogus#bogus')
 end
 
 describe "aygabtu scopes and their matching routes", bundled: true, order: :honors_final do
@@ -58,11 +19,37 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
     @routes_for_scope ||= {}
   end
 
-  context "EngineOne aygabtu route declarations" do
-    include Aygabtu::RSpec.example_group_module
-    aygabtu_handle.send :rails_application_routes=, EngineOne.instance.routes
+  context "setup for anything but the remaining scope" do
+    # This context contains no examples, but collects matching routes in different
+    # contexts that are used by examples later on in this file.
 
-    # routes matched by aygabtu in different contexts are collected here.
+    extend AygabtuSeesRoutes
+    include Aygabtu::RSpec.example_group_module
+
+    aygabtu_sees_routes do
+      get 'bogus', identified_by(:controller_route).merge(to: 'controller_a#bogus')
+
+      namespace "namespace" do
+        get 'bogus', identified_by(:namespaced_controller_route).merge(to: 'controller_a#bogus')
+
+        get 'bogus', identified_by(:namespaced_and_named).merge(to: 'bogus#bogus', as: 'name')
+
+        namespace :another_namespace do
+          get 'bogus', identified_by(:deeply_namespaced).merge(to: 'controller_a#bogus')
+        end
+      end
+
+      get 'bogus', identified_by(:action_route).merge(to: 'bogus#some_action')
+      get 'bogus', identified_by(:another_action_route).merge(to: 'bogus#other_action')
+
+      get ':segment', identified_by(:with_segment).merge(to: 'bogus#bogus')
+      get '*glob', identified_by(:with_glob).merge(to: 'bogus#bogus')
+
+      get ':first_segment/:second_segment', identified_by(:two_segments).merge(to: 'bogus#bogus')
+
+      get 'implicitly_named', identified_by(:implicitly_named).merge(to: 'bogus#bogus')
+      get 'bogus', identified_by(:explicitly_named).merge(to: 'bogus#bogus', as: :explicitly_named)
+    end
 
     controller(:controller_a) do
       routes_for_scope['controller controller_a'] = aygabtu_matching_routes
@@ -133,9 +120,17 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
     end
   end
 
-  context "EngineTwo aygabtu route declarations" do
+  context "setup for the remaining scope" do
+    # This context contains no examples, but collects matching routes in different
+    # contexts that are used by examples later on in this file.
+
+    extend AygabtuSeesRoutes
     include Aygabtu::RSpec.example_group_module
-    aygabtu_handle.send :rails_application_routes=, EngineTwo.instance.routes
+
+    aygabtu_sees_routes do
+      get 'bogus', identified_by(:ignored_route).merge(to: 'bogus#ignore')
+      get 'bogus', identified_by(:remaining_route).merge(to: 'bogus#bogus')
+    end
 
     # any action would mark this route as not remaining,
     # but only :ignore will not generate an example which would

@@ -2,12 +2,16 @@ require 'rails_application_helper'
 
 require 'aygabtu/rspec'
 
-Rails.application.routes.draw do
-  get 'bogus/:segment1/:segment2', to: 'bogus#action'
-end
+require 'support/aygabtu_sees_routes'
 
 describe "anatonomy of an aygabtu example" do
+  extend AygabtuSeesRoutes
+
   include Aygabtu::RSpec.example_group_module
+
+  aygabtu_sees_routes do
+    get 'bogus/:segment1/:segment2', to: 'bogus#action'
+  end
 
   context "contains a generated example" do
     action(:action) do

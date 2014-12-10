@@ -3,18 +3,19 @@ require 'rails_application_helper'
 require 'aygabtu/rspec'
 
 require 'support/identifies_routes'
-
-Rails.application.routes.draw do
-  extend IdentifiesRoutes
-
-  get 'bogus', identified_by(:an_identifier).merge(to: 'bogus#action1')
-  get 'bogus', identified_by(:another_identifier).merge(to: 'bogus#action2')
-end
+require 'support/aygabtu_sees_routes'
 
 describe "test mechanism for identifying routes independently of controller, name and action" do
-  include IdentifiesRoutes
+  extend AygabtuSeesRoutes
 
   include Aygabtu::RSpec.example_group_module
+
+  aygabtu_sees_routes do
+    get 'bogus', identified_by(:an_identifier).merge(to: 'bogus#action1')
+    get 'bogus', identified_by(:another_identifier).merge(to: 'bogus#action2')
+  end
+
+  include IdentifiesRoutes
 
   describe "route_identified_by" do
     it "returns the correct route" do
