@@ -317,7 +317,6 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
   # this example group will be executed last, (see final metadata and declared sorting)
   describe 'test coverage', final: true do
     it "has exhausted all registered scope data" do
-      # we cannot make sure this is the last example executed.
       expect(self.class.routes_for_scope).to be_empty
     end
   end
