@@ -37,16 +37,6 @@ describe "RouteWrapper", bundled: true do
 
   include Aygabtu::RSpec.example_group_module
 
-  describe "test mechanism for identifying routes independently of controller, name and action" do
-    it "works when picking identified route" do
-      expect(route_identified_by(:test_identification)).to be
-    end
-
-    it "works inside our matcher" do
-      expect(matching_routes).to include(be_identified_by(:test_identification))
-    end
-  end
-
   describe "#controller" do
     context "for a route to a controller" do
       it "has that controller" do
