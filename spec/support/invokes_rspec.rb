@@ -24,13 +24,26 @@ module InvokesRspec
     invoke_bundler(:install, '--local') || invoke_bundler(:install)
   end
 
-  def rspec_result(specfile)
+  def rspec_result(specfile = nil)
+    specfile ||= prepare_specfile
+
     output = invoke_bundler(:exec, :rspec, '--format', 'json', specfile) do |arglist|
       #system(*arglist)
       `#{arglist.shelljoin}`
     end
     raise "rspec gave no output, file not found?, syntax error in spec file? excption outside example?" if output.empty?
     _convert_raw_rspec_result(JSON.parse(output))
+  end
+
+  def prepare_specfile
+    path = Pathname(__FILE__).dirname.join('../_generated_spec.rb')
+    path.open('w') do |file|
+      file << rspec_file_content
+    end
+
+    root_path = Pathname(__FILE__).parent.parent.parent
+
+    path.relative_path_from(root_path)
   end
 
   def invoke_bundler(*args)
