@@ -1,13 +1,9 @@
-require 'shellwords'
 require 'json'
 require 'pathname'
 
 require 'bundler'
 
 require 'support/invokes_rspec'
-
-#require 'pry'
-#require 'pry-byebug'
 
 describe "behaviour under different gem versions" do
   shared_examples_for "integration-testing aygabtu" do
