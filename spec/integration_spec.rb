@@ -5,7 +5,6 @@ require 'pathname'
 require 'bundler'
 
 require 'support/invokes_rspec'
-require 'support/analyzes_examples'
 
 #require 'pry'
 #require 'pry-byebug'
@@ -13,7 +12,6 @@ require 'support/analyzes_examples'
 describe "behaviour under different gem versions" do
   shared_examples_for "integration-testing aygabtu" do
     include InvokesRspec
-    include AnalyzesExamples
 
     it "passes RouteWrapper tests" do
       expect(rspec_result('spec/lib/route_wrapper_spec.rb')).to contain_only_passed_examples
