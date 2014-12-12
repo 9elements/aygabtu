@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+    - 1.9.3
+    - 2.1.1
+env:
+  - RAILS_VERSION="~> 4.1.0" RSPEC_VERSION="~> 2.0"
+  - RAILS_VERSION="~> 4.1.0" RSPEC_VERSION="~> 3.0"
+  - RAILS_VERSION="~> 4.2.0.beta2" RSPEC_VERSION="~> 3.0"
+
