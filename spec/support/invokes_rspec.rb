@@ -1,3 +1,8 @@
+require 'bundler'
+
+require 'pathname'
+require 'json'
+
 module InvokesRspec
   def self.included(group)
     group.before(:all) { bundle_install }

@@ -1,8 +1,3 @@
-require 'json'
-require 'pathname'
-
-require 'bundler'
-
 require 'support/invokes_rspec'
 
 describe "behaviour under different gem versions" do
