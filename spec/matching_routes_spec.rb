@@ -4,6 +4,7 @@ require 'aygabtu/rspec'
 
 require 'support/identifies_routes'
 require 'support/aygabtu_sees_routes'
+require 'support/contain_exactly_shim'
 
 RSpec.configure do |rspec|
   rspec.register_ordering(:honors_final) do |items|
@@ -143,6 +144,7 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
   end
 
   include IdentifiesRoutes
+  include ContainExactlyShim
 
   describe 'matching routes' do
     # use the :scope metadata to define an example group's routes

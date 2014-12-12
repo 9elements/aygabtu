@@ -3,6 +3,7 @@ require 'rails_application_helper'
 require 'aygabtu/rspec'
 
 require 'support/identifies_routes'
+require 'support/contain_exactly_shim'
 
 #require 'pry-byebug'
 
@@ -34,6 +35,7 @@ end
 
 describe "RouteWrapper", bundled: true do
   include IdentifiesRoutes
+  include ContainExactlyShim
 
   include Aygabtu::RSpec.example_group_module
 
