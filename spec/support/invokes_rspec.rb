@@ -97,6 +97,20 @@ module InvokesRspec
     def payload
       Marshal.load(exception_message)
     end
+
+    def inspect
+      hash = {
+        line: line_number,
+        status: status
+      }
+      hash[:exception_message] = exception_message if failed?
+
+      segments = [
+        'Example',
+        *hash.map { |key, value| "#{key}: #{value.inspect}" }
+      ]
+      segments.join(' ')
+    end
   end
 
   def example_class
