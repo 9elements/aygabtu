@@ -74,7 +74,7 @@ describe "behaviour under different gem versions" do
       end
 
       it "generates failing examples" do
-        examples = convert_examples(rspec_result('spec/no_match_failures_spec.rb'))
+        examples = rspec_result('spec/no_match_failures_spec.rb').examples
 
         expect(examples.select(&:group_passing?)).to all(be_passed)
         expect(examples.select(&:group_pending?)).to all(be_pending)

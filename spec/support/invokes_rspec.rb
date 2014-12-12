@@ -11,7 +11,7 @@ module InvokesRspec
 
   def contain_only_passed_examples
     satisfy do |rspec_result|
-      rspec_result['examples'].all? { |example| example['status'] == 'passed' }
+      rspec_result.examples.all?(&:passed?)
     end
   end
 
@@ -31,7 +31,7 @@ module InvokesRspec
       `#{arglist.shelljoin}`
     end
     raise "rspec gave no output, file not found?, syntax error in spec file? excption outside example?" if output.empty?
-    JSON.parse(output)
+    _convert_raw_rspec_result(JSON.parse(output))
   end
 
   def invoke_bundler(*args)
@@ -57,6 +57,13 @@ module InvokesRspec
     # apparently, Bundler.with_clean_env already resets ENV for us, but I don't like to assume that
     ENV.replace old_env
   end
+
+  def _convert_raw_rspec_result(json)
+    examples = json['examples'].map { |raw| example_class.new(raw) }
+    RSpecResult.new(json, examples)
+  end
+
+  RSpecResult = Struct.new(:original_json, :examples)
 
   class Example
     attr_reader :raw
@@ -95,12 +102,6 @@ module InvokesRspec
 
     def payload
       Marshal.load(exception_message)
-    end
-  end
-
-  def convert_examples(result)
-    result['examples'].map do |raw|
-      example_class.new(raw)
     end
   end
 
