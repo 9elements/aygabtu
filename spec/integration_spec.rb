@@ -14,19 +14,19 @@ describe "behaviour under different gem versions" do
     include InvokesRspec
 
     it "passes RouteWrapper tests" do
-      expect(rspec_result('spec/lib/route_wrapper_spec.rb')).to contain_only_passed_examples
+      expect(rspec_result('spec/lib/route_wrapper_spec.rb').examples).to all(be_passed)
     end
 
     it "passes matching routes tests" do
-      expect(rspec_result('spec/matching_routes_spec.rb')).to contain_only_passed_examples
+      expect(rspec_result('spec/matching_routes_spec.rb').examples).to all(be_passed)
     end
 
     it "passes example anatomy tests" do
-      expect(rspec_result('spec/example_spec.rb')).to contain_only_passed_examples
+      expect(rspec_result('spec/example_spec.rb').examples).to all(be_passed)
     end
 
     it "passes visiting with parameters tests" do
-      expect(rspec_result('spec/visiting_routes_spec.rb')).to contain_only_passed_examples
+      expect(rspec_result('spec/visiting_routes_spec.rb').examples).to all(be_passed)
     end
 
     describe "failures for certain misconfigurations" do

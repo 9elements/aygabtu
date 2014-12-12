@@ -9,12 +9,6 @@ module InvokesRspec
     {}
   end
 
-  def contain_only_passed_examples
-    satisfy do |rspec_result|
-      rspec_result.examples.all?(&:passed?)
-    end
-  end
-
   def gemfile_path
     Pathname(__FILE__).dirname.join('Gemfile')
   end
