@@ -44,7 +44,8 @@ module Aygabtu
     end
 
     def action
-      @journey_route.requirements[:action]
+      # sanity condition needed for Rails 4.1
+      @journey_route.requirements[:action] if controller
     end
 
     def name
