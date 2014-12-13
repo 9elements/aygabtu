@@ -32,6 +32,11 @@ module InvokesRspec
       `#{arglist.shelljoin}`
     end
     raise "rspec gave no output, file not found?, syntax error in spec file? excption outside example?" if output.empty?
+
+    # rspec-rails 2.99 pollutes STDOUT with a deprecation warning. Work around that.
+    # This workaround assumes the warning does not contain a '{', while the JSON starts with it
+    output = output[%r{\A[^\{]*(.*)}m, 1]
+
     _convert_raw_rspec_result(JSON.parse(output))
   end
 
