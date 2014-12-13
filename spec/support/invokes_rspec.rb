@@ -19,7 +19,7 @@ module InvokesRspec
   end
 
   def prepare_specfile
-    path = Pathname(__FILE__).dirname.join('../_generated_spec.rb')
+    path = Pathname(__FILE__).dirname.join('../../_generated_spec.rb')
     path.open('w') do |file|
       file << rspec_file_content
     end
