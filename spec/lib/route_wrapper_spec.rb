@@ -3,41 +3,40 @@ require 'rails_application_helper'
 require 'aygabtu/rspec'
 
 require 'support/identifies_routes'
+require 'support/aygabtu_sees_routes'
 require 'support/contain_exactly_shim'
 
 #require 'pry-byebug'
 
-Rails.application.routes.draw do
-  extend IdentifiesRoutes
-
-  get 'bogus', identified_by(:test_identification).merge(to: 'bogus#bogus')
-
-  get 'bogus', identified_by(:has_implicit_controller).merge(to: 'foo#bogus')
-  get 'bogus', identified_by(:has_explicit_controller).merge(controller: :foo, action: :bogus)
-  get 'bogus', identified_by(:no_controller).merge(to: redirect('/'))
-  namespace "namespace" do
-    get 'bogus', identified_by(:namespaced_controller).merge(to: 'foo#bogus')
-  end
-  get 'bogus', identified_by(:unnamespaced_controller).merge(to: 'foo#bogus')
-  namespace 'namespace' do
-    get 'bogus', identified_by(:namespaced_no_controller).merge(to: redirect('/'))
-  end
-
-  get 'bogus', identified_by(:has_implicit_action).merge(to: 'bogus#foo')
-  get 'bogus', identified_by(:has_explicit_action).merge(controller: :bogus, action: :foo)
-  get 'bogus', identified_by(:no_action).merge(to: redirect('/'))
-
-  get 'name', identified_by(:explicitly_named).merge(to: 'bogus#bogus')
-
-  get '/:segment/*glob/bogus', identified_by(:has_segments).merge(to: 'bogus#bogus')
-end
-
-
-describe "RouteWrapper", bundled: true do
+describe "RouteWrapper" do
+  extend AygabtuSeesRoutes
   include IdentifiesRoutes
   include ContainExactlyShim
 
   include Aygabtu::RSpec.example_group_module
+
+  aygabtu_sees_routes do
+    get 'bogus', identified_by(:test_identification).merge(to: 'bogus#bogus')
+
+    get 'bogus', identified_by(:has_implicit_controller).merge(to: 'foo#bogus')
+    get 'bogus', identified_by(:has_explicit_controller).merge(controller: :foo, action: :bogus)
+    get 'bogus', identified_by(:no_controller).merge(to: redirect('/'))
+    namespace "namespace" do
+      get 'bogus', identified_by(:namespaced_controller).merge(to: 'foo#bogus')
+    end
+    get 'bogus', identified_by(:unnamespaced_controller).merge(to: 'foo#bogus')
+    namespace 'namespace' do
+      get 'bogus', identified_by(:namespaced_no_controller).merge(to: redirect('/'))
+    end
+
+    get 'bogus', identified_by(:has_implicit_action).merge(to: 'bogus#foo')
+    get 'bogus', identified_by(:has_explicit_action).merge(controller: :bogus, action: :foo)
+    get 'bogus', identified_by(:no_action).merge(to: redirect('/'))
+
+    get 'name', identified_by(:explicitly_named).merge(to: 'bogus#bogus')
+
+    get '/:segment/*glob/bogus', identified_by(:has_segments).merge(to: 'bogus#bogus')
+  end
 
   describe "#controller" do
     context "for a route to a controller" do

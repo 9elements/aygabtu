@@ -2,18 +2,19 @@ require 'rails_application_helper'
 
 require 'aygabtu/rspec'
 
+require 'support/aygabtu_sees_routes'
 require 'support/identifies_routes'
 
-Rails.application.routes.draw do
-  extend IdentifiesRoutes
+describe "aygabtu scopes and their matching routes", type: :feature do
+  extend AygabtuSeesRoutes
 
-  get 'bogus', to: 'bogus#route_without'
-  get 'bogus/:segment1', to: 'bogus#route_with'
-  get 'bogus/:segment1/:segment2', to: 'bogus#route_with_two'
-end
-
-describe "aygabtu scopes and their matching routes", bundled: true, type: :feature do
   include Aygabtu::RSpec.example_group_module
+
+  aygabtu_sees_routes do
+    get 'bogus', to: 'bogus#route_without'
+    get 'bogus/:segment1', to: 'bogus#route_with'
+    get 'bogus/:segment1/:segment2', to: 'bogus#route_with_two'
+  end
 
   def assert_path(path)
     # The fact that the path has already been formed means
