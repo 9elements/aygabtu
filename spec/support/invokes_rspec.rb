@@ -76,7 +76,7 @@ module InvokesRspec
   end
 
   def _convert_raw_rspec_result(json)
-    examples = json['examples'].map { |raw| example_class.new(raw) }
+    examples = json['examples'].map { |raw| Example.new(raw) }
     RSpecResult.new(json, examples)
   end
 
@@ -134,10 +134,6 @@ module InvokesRspec
       ]
       segments.join(' ')
     end
-  end
-
-  def example_class
-    Example
   end
 end
 
