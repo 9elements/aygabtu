@@ -1,36 +1,14 @@
-require 'bundler'
-
 require 'pathname'
 require 'json'
 
 module InvokesRspec
-  def self.included(group)
-    group.before(:all) { bundle_install }
-  end
-
   private
-
-  def gemfile_env
-    {}
-  end
-
-  def gemfile_path
-    Pathname(__FILE__).dirname.join('Gemfile')
-  end
-
-  def bundle_install
-    gemfile_lock = gemfile_path.dirname.join('Gemfile.lock')
-    gemfile_lock.unlink if gemfile_lock.exist?
-    invoke_bundler(:install, '--local') || invoke_bundler(:install)
-  end
 
   def rspec_result(specfile = nil)
     specfile ||= prepare_specfile
 
-    output = invoke_bundler(:exec, :rspec, '--format', 'json', specfile) do |arglist|
-      #system(*arglist)
-      `#{arglist.shelljoin}`
-    end
+    arglist = [:rspec, '--format', 'json', specfile]
+    output = `#{arglist.shelljoin}`
     raise "rspec gave no output, file not found?, syntax error in spec file? excption outside example?" if output.empty?
 
     # rspec-rails 2.99 pollutes STDOUT with a deprecation warning. Work around that.
@@ -49,30 +27,6 @@ module InvokesRspec
     root_path = Pathname(__FILE__).parent.parent.parent
 
     path.relative_path_from(root_path)
-  end
-
-  def invoke_bundler(*args)
-    old_env = ENV.to_hash.clone
-    arglist = if [:install, :check].include? args.first.to_s
-      # apparently we NEED to pass the --gemfile option, the env var is not honored
-      [:bundle, args.first, '--gemfile', gemfile_path, *args.drop(1)].map(&:to_s)
-    else
-      [:bundle, args.first, *args.drop(1)].map(&:to_s)
-    end
-    Bundler.with_clean_env do
-      # BUNDLE_GEMFILE is only used when command is exec
-      env = gemfile_env.merge('BUNDLE_GEMFILE' => gemfile_path.to_s)
-      ENV.replace ENV.to_hash.merge(env)
-
-      if block_given?
-        yield arglist
-      else
-        system(*arglist)
-      end
-    end
-  ensure
-    # apparently, Bundler.with_clean_env already resets ENV for us, but I don't like to assume that
-    ENV.replace old_env
   end
 
   def _convert_raw_rspec_result(json)
