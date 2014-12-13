@@ -14,8 +14,8 @@ module Aygabtu
         super.merge(remaining: @data[:remaining])
       end
 
-      def self.factory_method
-        :remaining
+      def self.factory_methods
+        [:remaining]
       end
     end
   end

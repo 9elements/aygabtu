@@ -11,8 +11,8 @@ module Aygabtu
         super.merge(visiting_data: inspected_or_nil(@data[:visiting_data]))
       end
 
-      def self.factory_method
-        :visiting_with
+      def self.factory_methods
+        [:visiting_with]
       end
     end
   end
