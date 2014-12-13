@@ -4,7 +4,7 @@ require 'aygabtu/rspec'
 
 require 'support/identifies_routes'
 require 'support/aygabtu_sees_routes'
-require 'support/contain_exactly_shim'
+require 'support/matcher_shims'
 
 describe "aygabtu scopes and their matching routes" do
   # make routes_for_scope a hash shared by all example groups below
@@ -137,7 +137,7 @@ describe "aygabtu scopes and their matching routes" do
   end
 
   include IdentifiesRoutes
-  include ContainExactlyShim
+  include MatcherShims
 
   describe 'matching routes' do
     # use the :scope metadata to define an example group's routes

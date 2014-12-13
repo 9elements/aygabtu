@@ -1,4 +1,4 @@
-module ContainExactlyShim
+module MatcherShims
   def contain_exactly(*objects_or_matchers)
     return super if defined?(super)
 

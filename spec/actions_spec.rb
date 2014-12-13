@@ -1,9 +1,9 @@
 require 'support/invokes_rspec'
-require 'support/contain_exactly_shim'
+require 'support/matcher_shims'
 
 describe "actions" do
   include InvokesRspec
-  include ContainExactlyShim
+  include MatcherShims
 
   def rspec_file_preamble
     %{

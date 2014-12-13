@@ -4,14 +4,14 @@ require 'aygabtu/rspec'
 
 require 'support/identifies_routes'
 require 'support/aygabtu_sees_routes'
-require 'support/contain_exactly_shim'
+require 'support/matcher_shims'
 
 #require 'pry-byebug'
 
 describe "RouteWrapper" do
   extend AygabtuSeesRoutes
   include IdentifiesRoutes
-  include ContainExactlyShim
+  include MatcherShims
 
   include Aygabtu::RSpec.example_group_module
 
