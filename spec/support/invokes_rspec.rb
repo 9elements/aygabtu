@@ -7,7 +7,7 @@ module InvokesRspec
   def rspec_result(specfile = nil)
     specfile ||= prepare_specfile
 
-    arglist = [:rspec, '--format', 'json', specfile]
+    arglist = ['rspec', '--format', 'json', specfile.to_s]
     output = `#{arglist.shelljoin}`
     raise "rspec gave no output, file not found?, syntax error in spec file? excption outside example?" if output.empty?
 
