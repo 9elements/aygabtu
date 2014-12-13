@@ -69,11 +69,7 @@ module Aygabtu
         "\#<Aygabtu scope (#{message})>"
       end
 
-      @factory_methods = COMPONENTS.map do |component|
-        [
-          *component.try(:factory_methods)
-        ]
-      end.flatten.compact
+      @factory_methods = COMPONENTS.map(&:factory_methods).reduce([], :+)
 
       class << self
         attr_reader :factory_methods
