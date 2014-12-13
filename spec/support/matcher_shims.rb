@@ -1,4 +1,4 @@
-module ContainExactlyShim
+module MatcherShims
   def contain_exactly(*objects_or_matchers)
     return super if defined?(super)
 
@@ -16,5 +16,24 @@ module ContainExactlyShim
       end
     end
   end
+
+  def all(matcher)
+    return super if defined?(super)
+
+    satisfy do |collection|
+      collection.all? { |item| matcher.matches?(item) }
+    end
+  end
+
+  module And
+    def and(another_matcher)
+      return super if defined?(super)
+
+      RSpec::Matchers::BuiltIn::Satisfy.new do |actual|
+        matches?(actual) && another_matcher.matches?(actual)
+      end
+    end
+  end
 end
 
+RSpec::Matchers::BuiltIn::BaseMatcher.send :include, MatcherShims::And

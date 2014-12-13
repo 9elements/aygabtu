@@ -1,59 +1,36 @@
-module InvokesRspec
-  def self.included(group)
-    group.before(:all) { bundle_install }
-  end
+require 'pathname'
+require 'json'
 
+module InvokesRspec
   private
 
-  def gemfile_env
-    {}
-  end
+  def rspec_result(specfile = nil)
+    specfile ||= prepare_specfile
 
-  def gemfile_path
-    Pathname(__FILE__).dirname.join('Gemfile')
-  end
-
-  def bundle_install
-    gemfile_lock = gemfile_path.dirname.join('Gemfile.lock')
-    gemfile_lock.unlink if gemfile_lock.exist?
-    invoke_bundler(:install, '--local') || invoke_bundler(:install)
-  end
-
-  def rspec_result(specfile)
-    output = invoke_bundler(:exec, :rspec, '--format', 'json', specfile) do |arglist|
-      #system(*arglist)
-      `#{arglist.shelljoin}`
-    end
+    arglist = [:rspec, '--format', 'json', specfile]
+    output = `#{arglist.shelljoin}`
     raise "rspec gave no output, file not found?, syntax error in spec file? excption outside example?" if output.empty?
+
+    # rspec-rails 2.99 pollutes STDOUT with a deprecation warning. Work around that.
+    # This workaround assumes the warning does not contain a '{', while the JSON starts with it
+    output = output[%r{\A[^\{]*(.*)}m, 1]
+
     _convert_raw_rspec_result(JSON.parse(output))
   end
 
-  def invoke_bundler(*args)
-    old_env = ENV.to_hash.clone
-    arglist = if [:install, :check].include? args.first.to_s
-      # apparently we NEED to pass the --gemfile option, the env var is not honored
-      [:bundle, args.first, '--gemfile', gemfile_path, *args.drop(1)].map(&:to_s)
-    else
-      [:bundle, args.first, *args.drop(1)].map(&:to_s)
+  def prepare_specfile
+    path = Pathname(__FILE__).dirname.join('../_generated_spec.rb')
+    path.open('w') do |file|
+      file << rspec_file_content
     end
-    Bundler.with_clean_env do
-      # BUNDLE_GEMFILE is only used when command is exec
-      env = gemfile_env.merge('BUNDLE_GEMFILE' => gemfile_path.to_s)
-      ENV.replace ENV.to_hash.merge(env)
 
-      if block_given?
-        yield arglist
-      else
-        system(*arglist)
-      end
-    end
-  ensure
-    # apparently, Bundler.with_clean_env already resets ENV for us, but I don't like to assume that
-    ENV.replace old_env
+    root_path = Pathname(__FILE__).parent.parent.parent
+
+    path.relative_path_from(root_path)
   end
 
   def _convert_raw_rspec_result(json)
-    examples = json['examples'].map { |raw| example_class.new(raw) }
+    examples = json['examples'].map { |raw| Example.new(raw) }
     RSpecResult.new(json, examples)
   end
 
@@ -111,10 +88,6 @@ module InvokesRspec
       ]
       segments.join(' ')
     end
-  end
-
-  def example_class
-    Example
   end
 end
 

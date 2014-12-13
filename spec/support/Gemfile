@@ -1,8 +1,0 @@
-source 'https://rubygems.org'
-
-gem 'rails', ENV['RAILS_VERSION']
-
-gem 'aygabtu', path: Pathname(__FILE__).dirname.join('../..')
-
-#gem 'pry'
-#gem 'pry-byebug'
