@@ -6,14 +6,7 @@ require 'support/identifies_routes'
 require 'support/aygabtu_sees_routes'
 require 'support/contain_exactly_shim'
 
-RSpec.configure do |rspec|
-  rspec.register_ordering(:honors_final) do |items|
-    final, nonfinal = items.partition { |item| item.metadata[:final] }
-    [*nonfinal.shuffle, *final]
-  end
-end
-
-describe "aygabtu scopes and their matching routes", bundled: true, order: :honors_final do
+describe "aygabtu scopes and their matching routes" do
   # make routes_for_scope a hash shared by all example groups below
   def self.routes_for_scope
     return superclass.routes_for_scope if superclass.respond_to?(:routes_for_scope)
@@ -316,11 +309,12 @@ describe "aygabtu scopes and their matching routes", bundled: true, order: :hono
     end
   end
 
-  # this example group will be executed last, (see final metadata and declared sorting)
-  describe 'test coverage', final: true do
-    it "has exhausted all registered scope data" do
-      expect(self.class.routes_for_scope).to be_empty
-    end
-  end
+  after(:all) do
+    next if self.class.routes_for_scope.empty?
 
+    $stderr.puts "Sanity check failed: not all saved configurations have been asserted against"
+    # RSpec tries hard to take full control and exit the process normally,
+    # so we apply a lot of force here.
+    Kernel.exit! 1
+  end
 end
