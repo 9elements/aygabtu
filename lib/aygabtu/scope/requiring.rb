@@ -18,8 +18,8 @@ module Aygabtu
         super.merge(requiring: @data[:requiring].inspect)
       end
 
-      def self.factory_method
-        :requiring
+      def self.factory_methods
+        [:requiring]
       end
     end
   end

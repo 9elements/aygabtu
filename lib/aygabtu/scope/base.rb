@@ -71,7 +71,6 @@ module Aygabtu
 
       @factory_methods = COMPONENTS.map do |component|
         [
-          component.try(:factory_method),
           *component.try(:factory_methods)
         ]
       end.flatten.compact

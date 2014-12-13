@@ -30,8 +30,8 @@ module Aygabtu
         super.merge(name: names.map(&:inspect).join('; '))
       end
 
-      def self.factory_method
-        :named
+      def self.factory_methods
+        [:named]
       end
     end
   end
