@@ -4,6 +4,7 @@ require 'aygabtu/rspec'
 
 require 'support/identifies_routes'
 require 'support/aygabtu_sees_routes'
+require 'support/matcher_shims'
 
 describe "test mechanism for identifying routes independently of controller, name and action" do
   extend AygabtuSeesRoutes
@@ -16,6 +17,7 @@ describe "test mechanism for identifying routes independently of controller, nam
   end
 
   include IdentifiesRoutes
+  include MatcherShims
 
   describe "route_identified_by" do
     it "returns the correct route" do
