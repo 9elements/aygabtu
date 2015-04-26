@@ -3,8 +3,8 @@ require_relative 'generator'
 
 module Aygabtu
   class ScopeActor
-    def initialize(scope, routes, example_group)
-      @scope, @routes, @example_group = scope, routes, example_group
+    def initialize(scope, example_group)
+      @scope, @example_group = scope, example_group
     end
 
     def self.actions
