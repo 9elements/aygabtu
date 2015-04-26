@@ -93,7 +93,8 @@ module Aygabtu
     def segments_generators_routes
       @segments_and_generators ||= @scope.segments.map do |segment|
         generator = Generator.new(segment, @example_group)
-        routes = @routes.select { |route| segment.matches_route?(route) }
+
+        routes = @example_group.aygabtu_matching_routes(segment)
 
         [segment, generator, routes]
       end
