@@ -95,12 +95,8 @@ module Aygabtu
       @journey_route.path.required_names
     end
 
-    def touch!
-      @touched = true
-    end
-
     def touched?
-      @touched
+      @marks.any?
     end
   end
 end

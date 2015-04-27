@@ -69,7 +69,6 @@ module Aygabtu
         raise "Action #{action} conflicts for #{route.inspect} with #{conflict_strings.join ", "}"
       else
         route.push_mark mark
-        route.touch!
       end
     end
 
