@@ -122,17 +122,34 @@ describe "aygabtu scopes and their matching routes" do
     include Aygabtu::RSpec.example_group_module
 
     aygabtu_sees_routes do
-      get 'bogus', identified_by(:ignored_route).merge(to: 'bogus#ignore')
-      get 'bogus', identified_by(:remaining_route).merge(to: 'bogus#bogus')
+      get 'bogus', identified_by(:visited_initially).merge(to: 'bogus#visited_initially')
+      get 'bogus', identified_by(:remaining_initially).merge(to: 'bogus#remaining_initially')
+      get 'bogus', identified_by(:remaining_eventually).merge(to: 'bogus#remaining_eventually')
     end
 
-    # any action would mark this route as not remaining,
-    # but only :ignore will not generate an example which would
-    # mess with our test setup
-    action(:ignore).ignore "make this route not remaining for aygabtu"
+    # don't generate examples here so we can use visit etc.
+    def aygabtu_example_for(*) end
+
+    action(:visited_initially).visit
+
+    routes_for_scope['examples for remaining, remaining after initial visit'] =
+      aygabtu_matching_routes(remaining)
 
     remaining do
-      routes_for_scope['remaining'] = aygabtu_matching_routes
+      routes_for_scope['examples for remaining, nested in remaining, after initial visit'] =
+        aygabtu_matching_routes
+
+      action(:remaining_initially).visit
+
+      routes_for_scope['examples for remaining, nested in remaining, after nested visit'] =
+        aygabtu_matching_routes
+      action(:remaining_initially).visit # this would generate an exception when matching no
+      # route. we do not rely on that alone by capturing matching routes immediately above
+
+      routes_for_scope['examples for remaining, nested in remaining, remaining after final visit'] = aygabtu_matching_routes(remaining)
+      remaining do
+        routes_for_scope['examples for remaining, nested in remaining, nested after final visit'] = aygabtu_matching_routes
+      end
     end
   end
 
@@ -301,10 +318,57 @@ describe "aygabtu scopes and their matching routes" do
     end
 
     describe "remaining scoping" do
-      context "scope", scope: 'remaining' do
-        it "matches route not matched yet" do
-          expect(routes).to contain_exactly(be_identified_by(:remaining_route))
+      shared_examples_for "remaining routes right after initial visit" do
+        it "does not match route visited before" do
+          expect(routes).not_to include(be_identified_by(:visited_initially))
         end
+
+        it "matches routes not visited before" do
+          expect(routes).to include(
+            be_identified_by(:remaining_initially),
+            be_identified_by(:remaining_eventually)
+          )
+        end
+      end
+
+      context "scope", scope: 'examples for remaining, remaining after initial visit' do
+        it_behaves_like "remaining routes right after initial visit"
+      end
+
+      context "scope", scope: 'examples for remaining, nested in remaining, after initial visit' do
+        it "does not match route visited before" do
+          expect(routes).not_to include(be_identified_by(:visited_initially))
+        end
+
+        it "matches routes not visited before" do
+          expect(routes).to include(
+            be_identified_by(:remaining_initially),
+            be_identified_by(:remaining_eventually)
+          )
+        end
+      end
+
+      context "scope", scope: 'examples for remaining, nested in remaining, after nested visit' do
+        it_behaves_like "remaining routes right after initial visit"
+      end
+
+      shared_examples_for "remaining routes after nested visit" do
+        it "does not match route visited before" do
+          expect(routes).not_to include(be_identified_by(:visited_initially))
+          expect(routes).not_to include(be_identified_by(:remaining_initially))
+        end
+
+        it "matches routes not visited before" do
+          expect(routes).to include(be_identified_by(:remaining_eventually))
+        end
+      end
+
+      context "scope", scope: 'examples for remaining, nested in remaining, remaining after final visit' do
+        it_behaves_like "remaining routes after nested visit"
+      end
+
+      context "scope", scope: 'examples for remaining, nested in remaining, nested after final visit' do
+        it_behaves_like "remaining routes after nested visit"
       end
     end
   end
