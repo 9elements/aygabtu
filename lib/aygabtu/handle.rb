@@ -16,6 +16,7 @@ module Aygabtu
 
     def bump_checkpoint!
       @checkpoint = checkpoint + 1
+      puts "Bumped checkpoint to #{@checkpoint}" if verbose?
     end
 
     def verbose!
