@@ -9,6 +9,10 @@ class RouteMark
   def conflicting?(other)
     !(action == :visit && other.action == :visit)
   end
+
+  def description
+    "#{action} action at #{poc} (which is after CP #{checkpoint})"
+  end
 end
 
 end

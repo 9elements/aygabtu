@@ -63,10 +63,8 @@ module Aygabtu
 
       conflicting_marks = route.conflicting_marks(mark)
       if conflicting_marks.any?
-        conflict_strings = conflicting_marks.map { |m|
-          "#{m.action} at #{m.poc}"
-        }
-        raise "Action #{action} conflicts for #{route.inspect} with #{conflict_strings.join ", "}"
+        conflict_strings = conflicting_marks.map(&:description)
+        raise "Action #{action} for #{route.inspect} conflicts with #{conflict_strings.join ", "}"
       else
         route.push_mark mark
       end
