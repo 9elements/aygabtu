@@ -1,10 +1,10 @@
 module Aygabtu
 
 class RouteMark
-  def initialize(action, poc)
-    @action, @poc = action, poc
+  def initialize(action, poc, checkpoint)
+    @action, @poc, @checkpoint = action, poc, checkpoint
   end
-  attr_reader :action, :poc
+  attr_reader :action, :poc, :checkpoint
 
   def conflicting?(other)
     !(action == :visit && other.action == :visit)
