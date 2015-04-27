@@ -30,6 +30,7 @@ module Aygabtu
 
       def aygabtu_action(action, scope, *args)
         ScopeActor.new(scope, self).public_send(action, *args)
+        aygabtu_handle.bump_checkpoint!
       end
 
       def aygabtu_handle

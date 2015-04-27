@@ -10,6 +10,14 @@ module Aygabtu
       end.select(&:get?).reject(&:internal?)
     end
 
+    def checkpoint
+      @checkpoint || 0
+    end
+
+    def bump_checkpoint!
+      @checkpoint = checkpoint + 1
+    end
+
     private
 
     def rails_application_routes
