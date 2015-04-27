@@ -7,10 +7,16 @@ module Aygabtu
     def initialize(journey_route)
       @journey_route = journey_route
 
-      @marks = Hash.new { |hash, key| hash[key] = [] }
+      @marks = []
     end
 
-    attr_reader :marks
+    def conflicting_marks(mark)
+      @marks.select { |m| m.conflicting?(mark) }
+    end
+
+    def push_mark(mark)
+      @marks << mark
+    end
 
     def get?
       @journey_route.verb.match('GET')

@@ -1,4 +1,5 @@
 require_relative 'point_of_call'
+require_relative 'route_mark'
 require_relative 'generator'
 
 module Aygabtu
@@ -58,15 +59,17 @@ module Aygabtu
     private
 
     def mark_route(route, action)
-      if route_action_valid?(route, action)
-        route.marks[action] << PointOfCall.point_of_call
-        route.touch!
-      else
-        previous_action, points_of_call = route.marks.to_a.find do |_, poc|
-          poc.present?
-        end
+      mark = RouteMark.new(action, PointOfCall.point_of_call)
 
-        raise "Trying to use route #{route.inspect} with action #{action}, but route has already been used with action #{previous_action} here: #{points_of_call.join ', '}"
+      conflicting_marks = route.conflicting_marks(mark)
+      if conflicting_marks.any?
+        conflict_strings = conflicting_marks.map { |m|
+          "#{m.action} at #{m.poc}"
+        }
+        raise "Action #{action} conflicts for #{route.inspect} with #{conflict_strings.join ", "}"
+      else
+        route.push_mark mark
+        route.touch!
       end
     end
 
