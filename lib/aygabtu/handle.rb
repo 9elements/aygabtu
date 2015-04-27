@@ -18,6 +18,14 @@ module Aygabtu
       @checkpoint = checkpoint + 1
     end
 
+    def verbose!
+      @verbose = true
+    end
+
+    def verbose?
+      !!@verbose
+    end
+
     private
 
     def rails_application_routes
