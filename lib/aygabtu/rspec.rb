@@ -29,7 +29,7 @@ module Aygabtu
       end
 
       def aygabtu_action(action, scope, *args)
-        puts "Action #{action} at checkpoint #{aygabtu_handle.checkpoint} from #{PointOfCall.point_of_call}" if aygabtu_handle.verbose?
+        puts "Action #{action} before checkpoint #{aygabtu_handle.next_checkpoint} from #{PointOfCall.point_of_call}" if aygabtu_handle.verbose?
         ScopeActor.new(scope, self).public_send(action, *args)
         aygabtu_handle.bump_checkpoint!
       end
