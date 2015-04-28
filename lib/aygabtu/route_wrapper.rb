@@ -16,10 +16,6 @@ module Aygabtu
 
     attr_reader :marks
 
-    def push_mark(mark)
-      @marks << mark
-    end
-
     def get?
       @journey_route.verb.match('GET')
     end
