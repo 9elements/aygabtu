@@ -59,7 +59,8 @@ module Aygabtu
     private
 
     def mark_route(route, action)
-      mark = RouteMark.new(action, PointOfCall.point_of_call, @example_group.aygabtu_handle.checkpoint)
+      checkpoint = @example_group.aygabtu_handle.generate_checkpoint
+      mark = RouteMark.new(action, PointOfCall.point_of_call, checkpoint)
 
       conflicting_marks = route.conflicting_marks(mark)
       if conflicting_marks.any?

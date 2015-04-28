@@ -23,6 +23,11 @@ module Aygabtu
       puts "Bumped checkpoint to #{@checkpoint}" if verbose?
     end
 
+    def generate_checkpoint
+      bump_checkpoint!
+      checkpoint
+    end
+
     def verbose!
       @verbose = true
     end
