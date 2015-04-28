@@ -92,9 +92,5 @@ module Aygabtu
     def really_required_keys
       @journey_route.path.required_names
     end
-
-    def touched?
-      @marks.any?
-    end
   end
 end

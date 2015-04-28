@@ -8,6 +8,7 @@ module Aygabtu
 
       def matches_route?(route)
         return super unless @data.key?(:remaining_at)
+
         at_checkpoint = @data[:remaining_at]
         route_touched = route.marks.any? { |mark| mark.checkpoint <= at_checkpoint }
         !route_touched && super
