@@ -11,7 +11,7 @@ class RouteMark
   end
 
   def description
-    "#{action} action at #{poc} (which is after CP #{checkpoint})"
+    "#{action} action at #{poc} (CP #{checkpoint})"
   end
 end
 
