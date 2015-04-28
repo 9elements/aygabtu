@@ -1,5 +1,7 @@
 # Aygabtu - all your GETs are belong to us!
 
+[![Build Status](https://secure.travis-ci.org/9elements/aygabtu.svg?branch=master "Build Status")](http://travis-ci.org/9elements/aygabtu)
+
 Aygabtu lets you write simplistic feature tests quickly.
 
 It provides a DSL on top of rspec and capybara that can be used to enumerate a rails application's routes and auto-generate feature tests.
