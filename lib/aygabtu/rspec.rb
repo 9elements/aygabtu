@@ -7,7 +7,7 @@ module Aygabtu
   module RSpec
 
     module ExampleGroupMethods
-      delegate(*Scope::Base.factory_methods, to: :aygabtu_scope_chain)
+      delegate(:remaining, *Scope::Base.factory_methods, to: :aygabtu_scope_chain)
 
       def aygabtu_scope
         @aygabtu_scope ||= if superclass.respond_to?(:aygabtu_scope)

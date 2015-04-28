@@ -1,21 +1,25 @@
 module Aygabtu
   module Scope
     module Remaining
-      def remaining
-        new_data = @data.dup.merge(remaining: true)
+      def remaining_at(checkpoint)
+        new_data = @data.dup.merge(remaining_at: checkpoint)
         self.class.new(new_data)
       end
 
       def matches_route?(route)
-        (!@data[:remaining] || !route.touched?) && super
+        return super unless @data.key?(:remaining_at)
+        at_checkpoint = @data[:remaining_at]
+        route_touched = route.marks.any? { |mark| mark.checkpoint <= at_checkpoint }
+        !route_touched && super
       end
 
       def inspect_data
-        super.merge(remaining: @data[:remaining])
+        return super unless @data.key?(:remaining_at)
+        super.merge(remaining_at: "CP #{@data[:remaining_at]}")
       end
 
       def self.factory_methods
-        [:remaining]
+        [:remaining_at]
       end
     end
   end

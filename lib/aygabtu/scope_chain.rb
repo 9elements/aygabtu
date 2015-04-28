@@ -22,6 +22,10 @@ module Aygabtu
       end
     end
 
+    def remaining(&block)
+      remaining_at(@example_group.aygabtu_handle.checkpoint, &block)
+    end
+
     ScopeActor.actions.each do |action|
       define_method(action) do |*args|
         @example_group.aygabtu_action(action, @scope, *args)

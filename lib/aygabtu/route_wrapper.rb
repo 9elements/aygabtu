@@ -14,6 +14,8 @@ module Aygabtu
       @marks.select { |m| m.conflicting?(mark) }
     end
 
+    attr_reader :marks
+
     def push_mark(mark)
       @marks << mark
     end
