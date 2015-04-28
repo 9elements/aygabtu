@@ -201,7 +201,7 @@ When the `visit` or `visit_with` actions are used, the scope uses the given para
 
 ### `remaining` and `requiring`
 
-`remaining` matches routes not used with any action yet. `requiring` matches routes which need the given route segments.
+`remaining` matches routes not used with any action yet, at the point of the call. `requiring` matches routes which need the given route segments.
 
 You can use them to build constructs like this:
 
