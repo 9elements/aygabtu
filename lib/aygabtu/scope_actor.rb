@@ -1,10 +1,11 @@
 require_relative 'point_of_call'
+require_relative 'route_mark'
 require_relative 'generator'
 
 module Aygabtu
   class ScopeActor
-    def initialize(scope, routes, example_group)
-      @scope, @routes, @example_group = scope, routes, example_group
+    def initialize(scope, example_group)
+      @scope, @example_group = scope, example_group
     end
 
     def self.actions
@@ -58,15 +59,15 @@ module Aygabtu
     private
 
     def mark_route(route, action)
-      if route_action_valid?(route, action)
-        route.marks[action] << PointOfCall.point_of_call
-        route.touch!
-      else
-        previous_action, points_of_call = route.marks.to_a.find do |_, poc|
-          poc.present?
-        end
+      checkpoint = @example_group.aygabtu_handle.generate_checkpoint
+      mark = RouteMark.new(action, PointOfCall.point_of_call, checkpoint)
 
-        raise "Trying to use route #{route.inspect} with action #{action}, but route has already been used with action #{previous_action} here: #{points_of_call.join ', '}"
+      conflicting_marks = route.conflicting_marks(mark)
+      if conflicting_marks.any?
+        conflict_strings = conflicting_marks.map(&:description)
+        raise "Action #{action} for #{route.inspect} conflicts with #{conflict_strings.join ", "}"
+      else
+        route.marks.push mark
       end
     end
 

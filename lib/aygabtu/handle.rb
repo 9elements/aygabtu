@@ -10,6 +10,24 @@ module Aygabtu
       end.select(&:get?).reject(&:internal?)
     end
 
+    def checkpoint
+      @checkpoint || 0
+    end
+
+    def generate_checkpoint
+      @checkpoint = (checkpoint + 1).tap do |new_checkpoint|
+        puts "New checkpoint #{new_checkpoint}" if verbose?
+      end
+    end
+
+    def verbose!
+      @verbose = true
+    end
+
+    def verbose?
+      !!@verbose
+    end
+
     private
 
     def rails_application_routes

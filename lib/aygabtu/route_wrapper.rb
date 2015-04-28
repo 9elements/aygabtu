@@ -7,7 +7,11 @@ module Aygabtu
     def initialize(journey_route)
       @journey_route = journey_route
 
-      @marks = Hash.new { |hash, key| hash[key] = [] }
+      @marks = []
+    end
+
+    def conflicting_marks(mark)
+      @marks.select { |m| m.conflicting?(mark) }
     end
 
     attr_reader :marks
@@ -87,14 +91,6 @@ module Aygabtu
 
     def really_required_keys
       @journey_route.path.required_names
-    end
-
-    def touch!
-      @touched = true
-    end
-
-    def touched?
-      @touched
     end
   end
 end

@@ -7,7 +7,7 @@ module Aygabtu
   module RSpec
 
     module ExampleGroupMethods
-      delegate(*Scope::Base.factory_methods, to: :aygabtu_scope_chain)
+      delegate(*ScopeChain.scope_methods, to: :aygabtu_scope_chain)
 
       def aygabtu_scope
         @aygabtu_scope ||= if superclass.respond_to?(:aygabtu_scope)
@@ -29,7 +29,8 @@ module Aygabtu
       end
 
       def aygabtu_action(action, scope, *args)
-        ScopeActor.new(scope, aygabtu_handle.routes, self).public_send(action, *args)
+        puts "Action #{action} after checkpoint #{aygabtu_handle.checkpoint} from #{PointOfCall.point_of_call}" if aygabtu_handle.verbose?
+        ScopeActor.new(scope, self).public_send(action, *args)
       end
 
       def aygabtu_handle
