@@ -14,18 +14,10 @@ module Aygabtu
       @checkpoint || 0
     end
 
-    def next_checkpoint
-      checkpoint + 1
-    end
-
-    def bump_checkpoint!
-      @checkpoint = next_checkpoint
-      puts "Bumped checkpoint to #{@checkpoint}" if verbose?
-    end
-
     def generate_checkpoint
-      bump_checkpoint!
-      checkpoint
+      @checkpoint = (checkpoint + 1).tap do |new_checkpoint|
+        puts "New checkpoint #{new_checkpoint}" if verbose?
+      end
     end
 
     def verbose!
