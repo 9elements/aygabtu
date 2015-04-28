@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Aygabtu::VERSION
   spec.authors       = ["Thomas Stratmann"]
   spec.email         = ["thomas.stratmann@9elements.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Feature test generator for GET requests}
+  spec.description   = %q{Feature test generator for GET requests, using Capybara and RSpec}
   spec.homepage      = ""
   spec.license       = "MIT"
 
