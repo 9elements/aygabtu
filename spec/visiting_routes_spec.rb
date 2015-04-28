@@ -5,7 +5,7 @@ require 'aygabtu/rspec'
 require 'support/aygabtu_sees_routes'
 require 'support/identifies_routes'
 
-describe "aygabtu scopes and their matching routes", type: :feature do
+describe "path construction when visiting a route", type: :feature do
   extend AygabtuSeesRoutes
 
   include Aygabtu::RSpec.example_group_module
