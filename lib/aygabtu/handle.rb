@@ -3,6 +3,9 @@ require_relative 'scope_actor'
 
 module Aygabtu
   class Handle
+    def initialize
+      @verbose = false
+    end
 
     def routes
       @routes ||= rails_application_routes.set.map do |journey_route|
@@ -25,7 +28,7 @@ module Aygabtu
     end
 
     def verbose?
-      !!@verbose
+      @verbose
     end
 
     private
