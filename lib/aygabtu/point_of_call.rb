@@ -15,14 +15,14 @@ module Aygabtu
     end
 
     def self.gem_root
-      return @gem_root if @gem_root
+      @gem_root ||= begin
+        path = Pathname(__FILE__)
+        while new_path = path.parent and new_path.to_s.include?('lib/aygabtu')
+          path = new_path
+        end
 
-      path = Pathname(__FILE__)
-      while new_path = path.parent and new_path.to_s.include?('lib/aygabtu')
-        path = new_path
+        path.to_s
       end
-
-      @gem_root= path.to_s
     end
   end
 end
