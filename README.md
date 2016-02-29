@@ -32,7 +32,7 @@ Or install it yourself as:
 Create `spec/features/aygabtu_features_spec.rb` with the following content:
 
 ```
-require 'spec_helper' # or whatever is necessary to initialize your Rails app and configure rspec and capybara
+require 'rails_helper'
 
 require 'aygabtu/rspec'
 
