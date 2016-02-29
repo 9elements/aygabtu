@@ -235,13 +235,11 @@ can be overwritten to tweak behaviour as needed.
 
 ### `#aygabtu_assertions`
 
-This is already demonstrated in the initial example. It is strongly recommended
+This is already demonstrated in the initial example. It is necessary
 to override this method with assertions specific to your project. Besides using
 available assertions as shown, add an assertion against an element common to all
 pages (fex. inside the site footer) and a negative assertion against text
 found in your 404 page.
-
-With the standard assertions configured, Aygabtu will happily accept a rails error page as long as the HTTP status is 200.
 
 ## Missing features
 
