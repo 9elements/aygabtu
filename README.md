@@ -234,7 +234,6 @@ You can also use `remaining` at the very bottom to pend all remaining routes, se
 
 ## Missing features
 
-* tests, preferrably against different versions of Rails, RSpec and capybara
 * support for example metadata (you can have it with a conventional `context` any time)
 
 ## Contributing
