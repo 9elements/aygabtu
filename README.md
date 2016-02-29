@@ -39,6 +39,7 @@ require 'aygabtu/rspec'
 describe "Aygabtu generated features", type: :feature do
   include Aygabtu::RSpec.example_group_module
 
+  # callback method for asserting against a loaded page
   def aygabtu_assertions
     aygabtu_assert_status_success
     aygabtu_assert_not_redirected_away
@@ -48,7 +49,7 @@ describe "Aygabtu generated features", type: :feature do
 
   # must be at the very bottom
   remaining.static_routes.visit
-  remaining.pend "pending because route needs segments passed"
+  remaining.pend "pending because route requires segments to be visited"
 end
 ```
 
