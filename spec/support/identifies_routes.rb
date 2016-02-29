@@ -7,7 +7,7 @@ module IdentifiesRoutes
     satisfy { |rw| rw.journey_route.defaults[:route_identifier] == identifier }
   end
 
-  def route_identified_by(identifier, all_routes = all_routes)
+  def route_identified_by(identifier, all_routes = all_routes())
     identified_routes = all_routes.select do |rw|
       rw.journey_route.defaults[:route_identifier] == identifier
     end
