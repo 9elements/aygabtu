@@ -1,5 +1,9 @@
 ## 0.2.1 (to be released)
 
+Breaking change:
+
+  - dropped support for ruby 1.9.3, added ruby 2.2 to CI matrix
+
 Improvements
 
   - documentation
