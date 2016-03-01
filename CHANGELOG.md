@@ -1,3 +1,9 @@
+## 0.2.1 (to be released)
+
+Improvements
+
+  - documentation
+
 ## 0.2.0 (2015-04-28)
 
 Breaking change:

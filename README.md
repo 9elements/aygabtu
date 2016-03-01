@@ -32,13 +32,14 @@ Or install it yourself as:
 Create `spec/features/aygabtu_features_spec.rb` with the following content:
 
 ```
-require 'spec_helper' # or whatever is necessary to initialize your Rails app and configure rspec and capybara
+require 'rails_helper'
 
 require 'aygabtu/rspec'
 
 describe "Aygabtu generated features", type: :feature do
   include Aygabtu::RSpec.example_group_module
 
+  # callback method for asserting against a loaded page
   def aygabtu_assertions
     aygabtu_assert_status_success
     aygabtu_assert_not_redirected_away
@@ -48,7 +49,7 @@ describe "Aygabtu generated features", type: :feature do
 
   # must be at the very bottom
   remaining.static_routes.visit
-  remaining.pend "pending because route needs segments passed"
+  remaining.pend "pending because route requires segments to be visited"
 end
 ```
 
@@ -227,13 +228,21 @@ You can also use `remaining` at the very bottom to pend all remaining routes, se
 * `dynamic_routes` matches routes which have a dynamic segment.
 * `static_routes` matches routes which have no dynamic segment.
 
-## Caveats
+## Extension points
 
-* With the standard assertions configured, Aygabtu will happily accept a rails error page as long as the HTTP status is 200. Somebody should find out how these can be reliably told apart from regular result pages, so the default assertions can be improved. Until then, you should try to add an assertion that checks for a common element on pages, like a footer element.
+Several class and instance methods (read: example group and example methods)
+can be overwritten to tweak behaviour as needed.
+
+### `#aygabtu_assertions`
+
+This is already demonstrated in the initial example. It is necessary
+to override this method with assertions specific to your project. Besides using
+available assertions as shown, add an assertion against an element common to all
+pages (fex. inside the site footer) and a negative assertion against text
+found in your 404 page.
 
 ## Missing features
 
-* tests, preferrably against different versions of Rails, RSpec and capybara
 * support for example metadata (you can have it with a conventional `context` any time)
 
 ## Contributing
