@@ -241,6 +241,14 @@ available assertions as shown, add an assertion against an element common to all
 pages (fex. inside the site footer) and a negative assertion against text
 found in your 404 page.
 
+### `.aygabtu_select_route?`
+
+Allows to filter out unwanted routes at a low level. This method is passed a route object
+from the journey gem and returns true for every route to be considered by aygabtu.
+
+This method helps keeping deep project specific knowledge and the knowledge about Rails interna needed
+to implement filtering out of aygabtu by giving users control.
+
 ## Missing features
 
 * support for example metadata (you can have it with a conventional `context` any time)

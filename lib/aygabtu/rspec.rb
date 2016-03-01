@@ -43,9 +43,13 @@ module Aygabtu
 
       def aygabtu_matching_routes(scope = aygabtu_scope)
         scope = scope.scope if scope.respond_to?(:scope) # a scope chain can be pased as well
-        aygabtu_handle.routes.select do |route|
-          scope.matches_route?(route)
-        end
+        aygabtu_handle.routes.select { |route|
+          scope.matches_route?(route) && aygabtu_select_route?(route.journey_route)
+        }
+      end
+
+      def aygabtu_select_route?(journey_route)
+        true
       end
 
       ScopeActor.actions.each do |action|

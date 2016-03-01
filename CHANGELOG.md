@@ -8,6 +8,10 @@ Improvements
 
   - documentation
 
+New feature:
+
+  - aygabtu_select_route? extension point
+
 ## 0.2.0 (2015-04-28)
 
 Breaking change:
