@@ -1,4 +1,4 @@
-## 0.2.1 (to be released)
+## 0.3.0 (2016-03-01)
 
 Breaking change:
 
