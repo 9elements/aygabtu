@@ -5,6 +5,7 @@ require_relative 'visiting_with'
 require_relative 'requiring'
 require_relative 'static_dynamic'
 require_relative 'remaining'
+require_relative 'override'
 
 module Aygabtu
   module Scope
@@ -28,7 +29,8 @@ module Aygabtu
         VisitingWith,
         Requiring,
         StaticDynamic,
-        Remaining
+        Remaining,
+        Override
       ]
 
       module BasicBehaviour
@@ -49,6 +51,7 @@ module Aygabtu
       include BasicBehaviour
 
       include(*COMPONENTS)
+      include(*COMPONENTS.select { |component| component.respond_to? :override_behavior }.map(&:override_behavior))
 
       def segments
         if split_once = segments_split_once
