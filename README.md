@@ -15,9 +15,11 @@ Aygabtu uses code generation under the hood, but tries to be guard-friendly: Gua
 
 Add this line to your application's Gemfile:
 
-    group :test do
-      gem 'aygabtu', require: false
-    end
+```ruby
+group :test do
+  gem 'aygabtu', require: false
+end
+```
 
 And then execute:
 
@@ -31,7 +33,7 @@ Or install it yourself as:
 
 Create `spec/features/aygabtu_features_spec.rb` with the following content:
 
-```
+```ruby
 require 'rails_helper'
 
 require 'aygabtu/rspec'
@@ -60,7 +62,7 @@ This will get you up and running with
 
 Roughly, the generated examples will look like this (they are not visible directly):
 
-```
+```ruby
 it "generated description here" do
   visit generated_path
   aygabtu_assertions
@@ -77,7 +79,7 @@ This is crucial to understand. Be sure not to miss this section.
 
 **Scopes** define rules and filters to be applied to routes. When an **action** is called for a scope, it affects all routes filtered by the scope and uses rules defined by it. Basic example:
 
-```
+```ruby
 controller(:posts).pend "TBD. Testing posts needs XY done before this can be tackled."
 ```
 
@@ -85,7 +87,7 @@ creates pending examples for every route routing into `PostsController`. Here, `
 
 Scopes can be **chained**. If this reminds you of ActiveRecord query chains, you are exactly on the right track here. For example,
 
-```
+```ruby
 namespace(:web).controller(:posts)
 ```
 
@@ -95,7 +97,7 @@ Aygabtu keeps a **current scope**. You can call any action inside an example gro
 
 Scopes can be **nested**. Call the last method of a scope chain with a block like this:
 
-```
+```ruby
 namespace(:web).controller(:posts) do
   before do
     ...
@@ -113,7 +115,7 @@ This creates a new example group (exactly what happens when you call `context` i
 
 To explain the last point,
 
-```
+```ruby
 namespace(:web) do
   controller(:posts).pend "TBD. Testing posts needs XY done before this can be tackled."
 end
@@ -146,7 +148,7 @@ Data can be passed as an argument to `visit_with` and using the `visiting_with` 
 
 Data is passed as a hash, where keys are parameter or dynamic segment names, and values are passed after being converted to strings. Symbol values are special: they are interpreted as method names within the example and used to obtain the actual value. Example:
 
-```
+```ruby
 controller(:posts) do
   def post_id
     post = Post.create
@@ -208,7 +210,7 @@ When the `visit` or `visit_with` actions are used, the scope uses the given para
 
 You can use them to build constructs like this:
 
-```
+```ruby
 controller(:posts) do
   # let's assume this has a simple resource(:posts) route declaration
 
